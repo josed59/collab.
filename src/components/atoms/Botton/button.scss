@@ -1,0 +1,20 @@
+@import '@styles/_global.scss';
+
+.botton{
+    width: 328px;
+    height: 48px;
+    border-radius: 14px;
+    border: 0px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 1.9rem;
+    letter-spacing: -0.03em;
+    color: $cblack_50;
+    cursor: pointer;
+}
+
+.primary{
+    background: $red_collab; 
+}

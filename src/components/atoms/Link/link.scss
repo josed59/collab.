@@ -1,0 +1,16 @@
+@import '@styles/_global.scss';
+
+.link{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 1.9rem;
+    letter-spacing: -0.03em;
+    text-decoration: none;
+}
+
+.red{
+    color: $red_collab;
+}
+
