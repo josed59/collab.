@@ -18,3 +18,8 @@
 .primary{
     background: $red_collab; 
 }
+
+.disable{
+    cursor: not-allowed;
+    pointer-events: none;
+ }

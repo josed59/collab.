@@ -1,9 +1,9 @@
 import React from "react";
 import './button.scss';
 
-function Button({label,type}){
+function Button({label,type,disable}){
     return(
-        <button className={'botton ' + type}>
+        <button className={'botton ' + type + disable}>
             {label}
         </button>
     );

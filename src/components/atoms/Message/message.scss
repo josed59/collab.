@@ -1,0 +1,17 @@
+@import '@styles/_global.scss';
+
+.login{
+    display: inline-block;
+    box-sizing: border-box;
+    width: 328px;
+    height: 34px;
+    padding-top: 10px;
+    color: $cred;
+    background-color: $cwhite;
+    font-family: 'Inter';
+    font-style: normal;
+    text-align: center;
+    font-weight: 400;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+}
