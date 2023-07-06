@@ -1,0 +1,56 @@
+@use '@styles/_global.scss' as styles;
+
+.Editbacklog-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 14px;
+
+    .Editbacklog-header{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 2px;
+
+        .Editbacklog-header-title{
+            text-align: center;
+        }
+
+        .Editbacklog-header-subtitle{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            .Editbacklog{
+                font-family: 'Roboto';
+                font-style: normal;
+                font-weight: 600;
+                font-size: 1.6rem;
+                line-height: 1.9rem;
+                letter-spacing: -0.03em;
+
+            }
+        }
+        
+    }
+    
+    .EditbacklogForm{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 14px;
+        
+        
+    }
+}
+
+@media (min-width: styles.$layout-breakpoint-small) {
+    .Editbacklog-container{
+        background-color: styles.$cwhite;
+        width: 490px;
+        margin: 130px auto;
+        padding-bottom: 12px;
+        }
+
+    }

@@ -1,0 +1,63 @@
+@use '@styles/_global.scss' as styles;
+
+.menuItem-container{
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+
+.navlink{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 2.4rem;
+    line-height: 2.8rem;
+    letter-spacing: -0.03em;
+    color: styles.$menu_li;
+    text-decoration: none;
+}
+
+
+.subMenu-container{
+    margin-top: 8px;
+    padding-left: 12px ;
+    color: styles.$menu_li;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 1.9rem;
+    letter-spacing: -0.03em;
+    text-align: left ;
+
+    p{
+        margin-top: 8px;
+        margin-bottom: 0;
+        cursor: pointer; 
+
+        a{
+            text-decoration: none;
+            color: inherit;    
+        }
+    }
+    p::before {
+        content: "";
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background-color: styles.$menu_li;
+        margin-right: 5px;
+      }
+
+      p:last-child::before{
+        width: 0;
+        height: 0;
+      }
+}
+
+.active {
+    color:styles.$cwhite;
+    font-weight: bold;
+  }
+

@@ -1,0 +1,134 @@
+@use '@styles/_global.scss' as styles;
+
+.carTaskdMolecule-container{
+    width: 328px;
+    height: 105px;
+    background-color: styles.$cwhite;
+    border-radius: 12px;
+    padding: 8px;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.25);
+    .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      
+      .top-left {
+        display: flex;
+        flex-direction: row;
+        align-items: center; 
+        gap:10px;
+
+        .size{
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 1.6rem;
+            line-height: 1.9rem;
+            letter-spacing: -0.03em;
+            color: styles.$cblack_150;
+        }
+      }
+    
+      .top-right {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-start;
+
+        span{
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 1.6rem;
+            line-height: 1.9rem;
+            letter-spacing: -0.03em;
+        }
+      }
+
+    .center {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        text-align: center;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 15px;
+        color: styles.$cblack_250;
+    }
+
+    
+}
+
+/*colores para los estados*/
+
+.state-red{
+    color: styles.$cred;
+}
+.state-green{
+  color: styles.$cgreen;
+}
+.state-blue{
+  color: styles.$cblue;
+}
+.state-black{
+  color: styles.$cblack_250;
+}
+
+// Seccion de la fecha y nombre 
+
+.bottom{
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+  color: styles.$cblack_250;
+}
+
+.date-assing-contend{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 2px;
+
+  .due-date{
+    margin-left: 4px;
+  }
+}
+
+@media (min-width: styles.$layout-breakpoint-small) {
+  .carTaskdMolecule-container{
+    width: 95%;
+    height: 60px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    
+    .bottom-right{
+      margin-left: 8px;
+    }
+
+    .top{
+      align-items: center; 
+      gap: 8px;
+    }
+
+    .center{
+      padding-left: 22px;
+      margin-right: auto;
+    }
+
+  }
+  .bottom{
+    margin-top: 0;
+  }
+}

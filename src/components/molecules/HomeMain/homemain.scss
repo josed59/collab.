@@ -1,0 +1,12 @@
+@use '@styles/_global.scss' as styles;
+.mainHome{
+    display: inline-block;
+    width: 100vw;
+}
+
+@media (min-width: styles.$layout-breakpoint-small) {
+    .mainHome{
+        width: calc(100vw - 320px);
+     }
+
+}

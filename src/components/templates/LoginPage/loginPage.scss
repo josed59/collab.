@@ -1,0 +1,37 @@
+@import '@styles/_global.scss';
+
+.main-login{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    .container-login{
+        height: 100%;
+        min-height: 484px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    
+    .link-pass {
+        margin-top: 18px;
+        
+    } 
+    
+    @media (min-width: $layout-breakpoint-small) {
+        .container-login{
+            background-color: $cwhite;
+            width: 490px;
+            height: 484px;
+            padding-top: 35px;
+            padding-bottom: 22px;
+            }
+
+        }
+
+}
+

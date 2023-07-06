@@ -1,4 +1,4 @@
-@import '@styles/_global.scss';
+@use '@styles/_global.scss' as styles;
 
 .link{
     font-family: 'Roboto';
@@ -11,6 +11,6 @@
 }
 
 .red{
-    color: $red_collab;
+    color: styles.$red_collab;
 }
 

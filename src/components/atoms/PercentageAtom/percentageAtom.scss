@@ -1,0 +1,32 @@
+@use '@styles/_global.scss' as styles;
+
+.PercentageAtom_container{
+    height: 64px;
+    width: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: styles.$cwhite;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 1.9rem;
+    text-align: center;
+    letter-spacing: -0.03em;
+    color: styles.$cblack_250;
+}
+
+.alert-high{ 
+    border: 4px solid styles.$cred;
+}
+.alert-warn{ 
+    border: 4px solid styles.$cyellow;
+}
+.alert-good{
+    border: 4px solid styles.$cblue;
+}
+.alert-low{
+    border: 4px solid styles.$cgreen;
+}

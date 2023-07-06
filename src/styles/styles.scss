@@ -1,0 +1,14 @@
+@use '@styles/_global.scss' as styles;
+
+html{
+    font-size: 62.5%;
+}
+
+body{
+    background-color: styles.$bg_principal;
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    
+
+}

@@ -1,0 +1,78 @@
+@use '@styles/_global.scss' as styles;
+
+.backlog-container{
+    width: 100%;
+    min-width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    .backlog-header{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 24px;
+        
+        .backlog-bottom{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 16px;
+
+            .search{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                .backlog-filter{
+                    margin-left: 16px;
+                }
+            }
+            
+            .new{
+                display: flex;
+                align-items: center;
+                font-family: 'Roboto';
+                font-style: normal;
+                margin-top: 8px;
+                font-weight: 400;
+                font-size: 1.6rem;
+                line-height: 1.9rem;
+                letter-spacing: -0.03em;
+                color: styles.$cblack_250;
+        
+                p{
+                    margin: 0;
+                    padding: 0;
+                }
+            }
+        }
+    }
+
+    .backlog-center-container{
+        display: flex;
+        height: calc(100vh - 250px);
+        width: 100%;
+        margin-top: 22px;
+        padding-top: 8px;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        overflow-y: scroll;
+    }
+
+}
+
+@media (min-width: styles.$layout-breakpoint-small) {
+    .backlog-containe{
+        width: calc(100vw - 320px);
+     }
+     .backlog-container .backlog-header .backlog-bottom{
+        width: calc(100vw - 400px);
+        flex-direction: row;
+        gap:18px;
+        align-items: flex-start;
+    }
+
+}

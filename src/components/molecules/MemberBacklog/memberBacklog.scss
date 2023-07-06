@@ -1,0 +1,76 @@
+@use '@styles/_global.scss' as styles;
+
+.memberBacklog-container{
+    width: 100vw;
+    min-width: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .memberBacklog-header-top{
+        display: flex;
+        margin-top: 34px;
+        align-items: center;
+        gap: 10px;
+
+        .tittle{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+    
+    .search{
+        margin-top: 5px;
+    }
+
+    .memberBacklog-center{
+        display: flex;
+        height: calc(100vh - 400px); 
+        width: 100%;
+        margin-top: 22px;
+        padding-top: 8px;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        overflow-y: scroll;
+    }
+}
+
+@media (min-width: styles.$layout-breakpoint-small) {
+    .memberBacklog-container{
+        width: calc(100vw - 320px);
+
+        .memberBacklog-header{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            
+            .search{
+                order: 1;
+                align-self: last baseline;
+                margin-left: 14px;
+            }
+        
+            .memberBacklog-header-top{
+                order: 2;
+                
+                margin-right: calc((100% - 256px) / 2);
+                
+                .tittle{
+                    order:1;
+                    min-width: 236px;
+                }
+
+                .percentage{
+                    order:2;
+                }
+            }
+        }
+
+    
+    }
+
+
+}

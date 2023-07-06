@@ -1,0 +1,46 @@
+@use '@styles/_global.scss' as styles;
+
+.closetask-container{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 14px;
+
+    .closetask-header-subtitle{
+        display: flex;
+        align-items: center;
+         gap: 12px;
+
+         .closetask{
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 1.6rem;
+            line-height: 1.9rem;
+            letter-spacing: -0.03em;
+            color: styles.$red_collab;
+         }
+    }
+
+    .EditbacklogForm{
+        display: flex;
+        //align-items: center;
+        flex-direction: column;
+        gap: 14px;
+
+        .EditbacklogForm-button {
+            margin-top: 200px;
+            align-self: center;
+        }
+    }
+}
+
+@media (min-width: styles.$layout-breakpoint-small) {
+    .closetask-container{
+        background-color: styles.$cwhite;
+        width: 490px;
+        margin: 130px auto;
+        padding-bottom: 12px;
+        }
+
+    }

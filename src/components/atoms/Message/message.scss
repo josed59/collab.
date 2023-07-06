@@ -1,4 +1,4 @@
-@import '@styles/_global.scss';
+@use '@styles/_global.scss' as styles;
 
 .login{
     display: inline-block;
@@ -6,8 +6,8 @@
     width: 328px;
     height: 34px;
     padding-top: 10px;
-    color: $cred;
-    background-color: $cwhite;
+    color: styles.$cred;
+    background-color: styles.$cwhite;
     font-family: 'Inter';
     font-style: normal;
     text-align: center;

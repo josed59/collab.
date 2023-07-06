@@ -1,9 +1,10 @@
-@import '@styles/_global.scss';
+@use '@styles/_global.scss' as styles;
 
 .container-button{
     display: flex;
     flex-direction: column;
     gap: 8px;
+    align-items: center;
 }
 
 label{
@@ -13,15 +14,15 @@ label{
     font-size: 2.4rem;
     line-height: 2.8rem;
     letter-spacing: -0.03em;
-    color: $cblack_250;
+    color: styles.$cblack_250;
 }
 
 .input{
     width: 328px;
     height: 36px;
     border-radius: 6px;
-    background-color: $bg_secondary;
-    border: 0.5px solid $cblack_pure;
+    background-color: styles.$bg_secondary;
+    border: 0.5px solid styles.$cblack_pure;
     text-align: center;
     font-family: 'Inter';
     font-style: normal;
@@ -36,15 +37,31 @@ label{
 
 .input:focus{
     border: 0px;
-    box-shadow: 0 0 10px $cblack_200;
+    box-shadow: 0 0 10px styles.$cblack_200;
 }
 
 .input::placeholder{
-    color: $cblack_250;
+    color: styles.$cblack_250;
     text-align: left;
     padding-left: 8px;
 }
 
 .error::placeholder{
-    color: $cred;
+    color: styles.$cred;
+}
+
+.Search{
+    width: 250px;
+}
+
+@media (min-width: styles.$layout-breakpoint-md) {
+    .Search{
+        width: 100%;
+    }
+}
+
+@media (min-width: styles.$layout-breakpoint-bg) {
+    .Search{
+        width: 250px;
+    }
 }

@@ -1,0 +1,65 @@
+@use '@styles/_global.scss' as styles;
+
+.dropdownAtom-container{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    margin-left: 25px;
+    
+    
+    label{
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 2.4rem;
+        line-height: 2.8re,;
+        letter-spacing: -0.03em;
+        color: styles.$cblack_250;
+    }
+
+    select{
+        width: 156px;
+        height: 36px;
+        padding-left: 10px;
+        border-radius: 6px;
+        background-color: styles.$bg_secondary;
+        border: 0.5px solid styles.$cblack_pure;
+        text-align: center;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.2rem;
+        line-height: 1.5rem;
+        outline: none;
+    }
+    
+    
+    
+    select:focus{
+        border: 0px;
+        box-shadow: 0 0 10px styles.$cblack_200;
+    }
+    
+    select::placeholder{
+        color: styles.$cblack_250;
+        text-align: left;
+        padding-left: 8px;
+    }
+    
+    .error::placeholder{
+        color: styles.$cred;
+    }
+
+    option{
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.2rem;
+        line-height: 1.5rem;
+        color: styles.$cblack_150;
+    }
+    
+}
+

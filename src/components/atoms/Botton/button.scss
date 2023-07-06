@@ -1,4 +1,4 @@
-@import '@styles/_global.scss';
+@use '@styles/_global.scss' as styles;
 
 .botton{
     width: 328px;
@@ -11,12 +11,12 @@
     font-size: 1.6rem;
     line-height: 1.9rem;
     letter-spacing: -0.03em;
-    color: $cblack_50;
+    color: styles.$cblack_50;
     cursor: pointer;
 }
 
 .primary{
-    background: $red_collab; 
+    background: styles.$red_collab; 
 }
 
 .disable{

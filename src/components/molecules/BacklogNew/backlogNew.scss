@@ -1,0 +1,30 @@
+@use '@styles/_global.scss' as styles;
+
+.backlogNew-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    gap: 30px;
+
+    .backlogNewForm{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+
+        div{
+            width: 100%;
+        }
+    }
+}
+
+@media (min-width: styles.$layout-breakpoint-small) {
+    .backlogNew-container{
+        background-color: styles.$cwhite;
+        width: 490px;
+        margin: 130px auto;
+        padding-bottom: 12px;
+        }
+
+    }

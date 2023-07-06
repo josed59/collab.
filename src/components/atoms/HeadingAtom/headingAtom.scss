@@ -1,0 +1,39 @@
+@use '@styles/_global.scss' as styles;
+
+.heading-h1{
+    font-family: 'Inter';
+    font-style: normal;
+    letter-spacing: -0.03em;
+    color: styles.$cblack_pure;
+    font-weight: 700;
+    font-size: 3.4rem;
+    line-height: 4.1rem;
+    margin: 0;
+    margin-top: 18px;
+}
+
+.heading-h2{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 2.4rem;
+    line-height: 2.8rem;
+    letter-spacing: -0.03em;
+    color: styles.$cblack_200;
+    margin: 0;
+}
+
+
+.heading-h3{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 1.9rem;
+    letter-spacing: -0.03em;
+    color: styles.$cblack_250;
+    margin: 0;
+}
+
+
+

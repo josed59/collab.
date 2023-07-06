@@ -1,0 +1,14 @@
+@use '@styles/_global.scss' as styles;
+
+.checkAtom-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+
+
+    input{
+        height: 25px;
+        width: 25px;
+       
+    }
+}

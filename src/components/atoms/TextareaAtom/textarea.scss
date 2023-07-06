@@ -1,0 +1,52 @@
+@use '@styles/_global.scss' as styles;
+
+.textarea-container{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+
+    label{
+        font-family: 'Roboto';
+        font-style: normal;
+        font-weight: 600;
+        font-size: 2.4rem;
+        line-height: 2.8rem;
+        letter-spacing: -0.03em;
+        color: styles.$cblack_250;
+    }
+
+    textarea{
+        width: 328px;
+        height: 80px;
+        border-radius: 6px;
+        background-color: styles.$bg_secondary;
+        border: 0.5px solid styles.$cblack_pure;
+        text-align: center;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 1.2rem;
+        line-height: 1.5rem;
+        outline: none;
+    
+    }
+    
+    
+    
+    textarea:focus{
+        border: 0px;
+        box-shadow: 0 0 10px styles.$cblack_200;
+    }
+    
+    textarea::placeholder{
+        color: styles.$cblack_250;
+        text-align: left;
+        padding-left: 8px;
+    }
+    
+    .error::placeholder{
+        color: styles.$cred;
+    }
+
+}

@@ -1,0 +1,77 @@
+@use '@styles/_global.scss' as styles;
+
+.container-nav{
+   /* width: 100%; Se comenta por que causa error al cambiar el tamaño de dispositivo*/ 
+   min-width: 360px;
+   height: 54px;
+   border-bottom: 1px solid styles.$cblcak_100; 
+
+
+   ul{
+      display: flex;
+      list-style: none;
+      margin: 6px 16px 0px 16px;
+      padding: 0px;
+      align-items: center;
+      justify-content: space-between;
+    
+
+      li{
+         display: inline-block;   
+      }
+
+      .email{
+         margin-left: auto;
+         padding-right: 6px;
+         font-family: 'Roboto';
+         font-style: normal;
+         font-weight: 600;
+         font-size: 2.4rem;
+         line-height: 2.8rem;
+         letter-spacing: -0.03em;
+         color: styles.$cblack_200;
+      }
+
+      .hidde-on-desktop {
+          display: inline-block;
+
+      }
+
+      .hidde-on-mobile {
+         display: none;
+         
+       }
+      
+      @media (min-width: styles.$layout-breakpoint-small) {
+         .hidde-on-desktop{
+            display: none;
+          }
+
+          .hidde-on-mobile {
+            display: inline-block;
+          }
+
+      }
+   }
+
+   
+}
+
+.container-img{
+   height: 32px;
+   width: 32px;
+
+   img{
+      height: 100%;
+      width: 100%;
+   }
+}
+
+@media (min-width: styles.$layout-breakpoint-small) {
+   .container-nav{
+      padding-right: 70px;
+      padding-left: 75px;
+   }
+
+}
+

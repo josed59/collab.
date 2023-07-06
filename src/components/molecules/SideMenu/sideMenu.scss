@@ -1,0 +1,56 @@
+@use '@styles/_global.scss' as styles;
+
+
+.menu-aside{
+    width: 300px;
+    height: calc(99vh - 54px);
+    background-color: styles.$menu_bg;
+    float: left;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    display: none;
+    z-index: 9999;
+   
+
+    ul{
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        
+        li{
+            text-align: center;
+            border-top: 1px solid styles.$menu_li;   
+            padding-top: 6px;
+            padding-bottom: 15px;
+
+        }
+
+        li:nth-child(1){
+            display: none;
+            height: 68px;
+            padding: 0;
+            margin: 0;
+            text-align: right;
+
+        }
+        @media (max-width: styles.$layout-breakpoint-small) {
+                li:nth-child(1){
+                    display: block;
+                }
+            }
+    }
+
+}
+
+
+
+@media (min-width: styles.$layout-breakpoint-small) {
+    .menu-aside{
+        display: block;
+        opacity: 1;
+        visibility: visible;
+        }
+    }
+
+

@@ -1,0 +1,73 @@
+.arrow{
+    background-image: url('@icon/Arrow.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 24px;
+    margin: 0px;
+    margin-left: 4px;
+    cursor: pointer;
+}
+
+.exit{
+    display: inline-block;
+    background-image: url('@icon/Exit.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+    margin: 0px;
+    margin-top: 18px;
+    margin-right: 4px;
+    cursor: pointer;
+}
+
+.Add{
+    display: inline-block;
+    background-image: url('@icon/Add.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+    margin: 0px;
+    cursor: pointer;
+}
+
+.task{
+    display: inline-block;
+    background-image: url('@icon/Task.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+    margin: 0px;
+    cursor: pointer;
+}
+
+.check{
+    display: inline-block;
+    background-image: url('@icon/check.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 27px;
+    height: 24px;
+    margin: 0px;
+    cursor: pointer;
+}
+
+.qa{
+    display: inline-block;
+    background-image: url('@icon/approved-qa.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    margin: 0px;
+    cursor: pointer;
+}

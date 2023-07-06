@@ -1,0 +1,80 @@
+@use '@styles/_global.scss' as styles;
+
+.Member-header{
+    width: 100Vw; 
+    min-width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.status-assing-container{
+    display: grid;
+    min-width: 350px;
+    grid-template-rows: auto; /* Una fila con altura automática */
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas con ancho automático */
+    padding: 0 30px;
+    justify-content: center;
+    
+    div{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+    
+    .information{
+        gap: 10px  
+    }
+
+}
+.memberFilter-container{
+    width: 100%;
+    display: flex;
+}
+
+.cardTask-container{
+    display: flex;
+    height: calc(100vh - 250px);
+    width: 100%;
+    margin-top: 22px;
+    padding-top: 8px;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    overflow-y: scroll;
+}
+
+@media (min-width: styles.$layout-breakpoint-small) {
+    .Member-header{
+        width: calc(100vw - 320px);
+     }
+     .status-assing-container{
+       width: 95%;
+       display: flex;
+       flex-direction: row;
+       gap: 10px;
+
+     .search-item{
+        order:1;
+     }
+
+     .memberFilter-container{
+        justify-content: left;
+        order:2;
+
+     }
+
+     .information{
+        padding-right: 95px;
+        order:3;
+     }
+
+     .assing{
+        order:4;
+     }
+     }
+
+    
+
+}

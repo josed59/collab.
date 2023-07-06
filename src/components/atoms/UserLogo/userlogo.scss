@@ -1,0 +1,20 @@
+@use '@styles/_global.scss' as styles;
+
+.container-userLogo{
+    width: 44px;
+    height: 44px;
+    background-color: styles.$cblack_pure;
+    border-radius: 50%;
+    text-align: center;
+    color:styles.$cblack_50 ;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 3.4rem;
+    line-height: 4.1rem;
+    letter-spacing: -0.03em; 
+
+    
+}
+
+
