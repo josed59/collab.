@@ -1,13 +1,13 @@
-async function loginService(APIBASE,Credenciales) {
+async function loginService(APIBASE,email,pass) {
     try {
-      const response = await fetch(`${APIBASE}/login/login`, {
+      const response = await fetch(`${APIBASE}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
-          email: Credenciales.EMAIL,
-          password: Credenciales.PASS,
+          email: email,
+          password: pass,
         }),
       });
   
@@ -18,7 +18,6 @@ async function loginService(APIBASE,Credenciales) {
       const data = await response.json();
   
       // Manejo exitoso de la respuesta
-      console.log('Respuesta:', data);
       return data;
     } catch (error) {
       // Manejo de errores

@@ -3,6 +3,9 @@ import { Header } from "@molecules/Header/Header";
 import { SideMenu } from "@molecules/SideMenu/SideMenu";
 import { HomeMain } from "@molecules/HomeMain/HomeMain";
 import { Outlet } from 'react-router-dom';
+import {SecurePath} from "@hooks/useLogin";
+
+
 
 function MainTemplate(){
 
@@ -12,14 +15,13 @@ function MainTemplate(){
       };
 
     return(
-        <>  
+        <SecurePath>  
             <Header   handleClickMenuButton={handleClickMenuButton} />
             <SideMenu menuVisible={menuVisible} handleClickMenuButton={handleClickMenuButton} />
             <HomeMain>
                 <Outlet />
             </HomeMain>
-            
-        </>
+        </SecurePath>
     );
 }
 

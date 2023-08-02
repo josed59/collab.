@@ -4,7 +4,7 @@ import { NavLink,Link } from "react-router-dom";
 import './menuItem.scss' ;
 import { Iconic } from "@atoms/Iconic/iconic";
 
-function MenuItem({text, to,icon,data }){
+function MenuItem({text, to,icon,data,action }){
     const [isContentVisible, setIsContentVisible] = useState(false);
 
     const toggleContent = () => {
@@ -17,6 +17,7 @@ function MenuItem({text, to,icon,data }){
         <div  className="menuItem-container">
             <NavLink
                 to={to}
+                onClick={action}
                 className={({ isActive }) =>
                     `navlink ${ isActive ? "active" : ""}`
                 }

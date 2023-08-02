@@ -2,21 +2,21 @@ import React,{ useRef } from "react";
 import { Input } from "@atoms/Input/Input";
 import { Button } from "@atoms/Botton/Botton";
 import { Message } from "@atoms/Message/Message";
-import {useLogin} from "@hooks/useLogin"
+import {useLogin} from "@hooks/useLogin";
 
 import './loginForm.scss';
 
 
 function LoginForm(){
     const formRef = useRef(null);
-    const { login, loading, error } = useLogin();
+    const { login, loading, error,user } = useLogin();
     
     const handlerOnSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(formRef.current);
         const credentials = {
-          username: formData.get('email'),
-          password: formData.get('pass')
+            username: formData.get('email'),
+            password: formData.get('pass')
         };
         login(credentials);
     };
@@ -56,6 +56,7 @@ function LoginForm(){
         <div>
             <Button type='primary' label='Log in' disable={styleLoding}/> 
         </div>
+       
         
         </form>
     );

@@ -1,10 +1,13 @@
-import React from "react";
+import React,{useContext} from "react";
+import { AppContext } from '@context/AppContext';
 import './header.scss';
 import  {UserLogo} from '@atoms/UserLogo/UserLogo'
 import CollabLogo from "@molecules/CollabLogo/CollabLogo";
 import menuIcon from '@icon/menu.png';
 
+
 function Header({handleClickMenuButton}){
+    const {user} = useContext(AppContext);
     return(
         <nav className="container-nav">
             <ul>
@@ -18,7 +21,7 @@ function Header({handleClickMenuButton}){
                     />
                 </li>
                 <li className="email hidde-on-mobile">
-                    <span >veronica@email.com</span>
+                    <span >{user?.email}</span>
                 </li>
                 <li>
                     

@@ -22,6 +22,8 @@ module.exports = {
     '@services': path.resolve(__dirname, 'src/utils/services/'),
     '@hooks': path.resolve(__dirname, 'src/utils/hooks/'),
     '@icon': path.resolve(__dirname, 'src/assets/icon/'),
+    '@context': path.resolve(__dirname, 'src/context/'),
+
 
   }
   },

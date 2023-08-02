@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import { MenuItem } from "@molecules/MenuItem/MenuItem";
 import { Iconic } from "@atoms/Iconic/iconic";
 import useScreenSize from "@hooks/useScreenSize";
+import {useLogin} from "@hooks/useLogin";
+
 import './sideMenu.scss';
 
 const data =[
@@ -19,6 +21,7 @@ const data =[
 
 
 function SideMenu({menuVisible, handleClickMenuButton}){
+    const { logout } = useLogin();
     const location = useLocation();
     const {screenWidth} = useScreenSize();
     let  menuStyle = {};
@@ -81,6 +84,7 @@ function SideMenu({menuVisible, handleClickMenuButton}){
                     <MenuItem 
                         text="Log Out" 
                         to="/"
+                        action ={logout}
                     />
                 </li>
             </ul>
