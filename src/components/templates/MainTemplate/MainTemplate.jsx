@@ -4,6 +4,7 @@ import { SideMenu } from "@molecules/SideMenu/SideMenu";
 import { HomeMain } from "@molecules/HomeMain/HomeMain";
 import { Outlet } from 'react-router-dom';
 import {SecurePath} from "@hooks/useLogin";
+import { AppContext } from '@context/AppContext'; 
 
 
 
@@ -13,7 +14,8 @@ function MainTemplate(){
     const handleClickMenuButton = () => {
         setMenuVisible(!menuVisible);
       };
-
+    const {state} = useContext(AppContext);
+    
     return(
         <SecurePath>  
             <Header   handleClickMenuButton={handleClickMenuButton} />
@@ -21,6 +23,7 @@ function MainTemplate(){
             <HomeMain>
                 <Outlet />
             </HomeMain>
+            {state.isLoading && <SpinnerMolecule/>}
         </SecurePath>
     );
 }

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppContext } from '@context/AppContext';
 
 
-
+// definicion de clase de usuario la cual guarda los valores retornados de la api
 class UserModel {
   constructor(name,email,userType) {
     this.name = name;
@@ -16,27 +16,28 @@ class UserModel {
 
 const useLogin = () => {
   const [username,setUsername] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const { setUser } = useContext(AppContext);
+  /* const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null); */
+  const { setUser,setLoading,setError, onFinally, state} = useContext(AppContext);
   const navigate = useNavigate();
 
   
 
   const login = async (credentials) => {
+
+
     try {
-      setLoading(true);
-      setError(null);
+      setLoading();
       
       const response = await loginService(API_BASE,credentials.username,credentials.password);
 
       // Manejar la respuesta exitosa del inicio de sesión
    
       if (!response.success){
-         setError(true);
+         setError();
          return
       }
-      console.log(response.user.userType);
+      // si la respuesta es exitosa se genera la clase
       const userModel = new UserModel(
         response.user.name,
         response.user.email,
@@ -44,37 +45,43 @@ const useLogin = () => {
       );
       setUsername(userModel);
       setUser(userModel);
+      //se redirecciona al home
       navigate('/');
 
     } catch (error) {
       // Manejar el error del inicio de sesión
-      setError(error);
+      setError();
       console.log(error);
     } finally {
-      setLoading(false);
-    }
+      onFinally();
+    } 
   };
 
   // Funcion para cerrar sesion
   const logout=() =>{
     setUsername(null);
     setUser(null);
-    console.log('llega');
   }
 
 
-  return { login, loading, error,username,logout};
+  return { 
+    login,
+     loading : state.isLoading,
+     error: state.isError,
+     username,
+    logout
+  };
 };
 
 function SecurePath({ children }){
-  const context = useContext(AppContext);
+  const { state } = useContext(AppContext);
   const navigate = useNavigate();
 
-  /* useEffect(() => {
-    if (!context.user) {
+  useEffect(() => {
+    if (!state.user) {
       navigate('/login');
     }
-  }, [context.user, navigate]); */
+  }, [state, navigate]);
   
   return(
     <>
