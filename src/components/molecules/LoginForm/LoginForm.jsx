@@ -9,7 +9,7 @@ import './loginForm.scss';
 
 function LoginForm(){
     const formRef = useRef(null);
-    const { login, loading, error,user } = useLogin();
+    const { login, loading, error,user,message } = useLogin();
 
     
     const handlerOnSubmit = (event) => {
@@ -49,7 +49,7 @@ function LoginForm(){
         { error &&
             <div>
             <Message 
-                text = "User / Email or Password do not match"
+                text={message === undefined ? 'User / Email or Password do not match' : message}
                 type = "login"
                 />
             </div>

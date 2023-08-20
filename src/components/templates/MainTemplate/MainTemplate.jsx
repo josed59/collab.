@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import { Header } from "@molecules/Header/Header";
 import { SideMenu } from "@molecules/SideMenu/SideMenu";
 import { HomeMain } from "@molecules/HomeMain/HomeMain";
 import { Outlet } from 'react-router-dom';
 import {SecurePath} from "@hooks/useLogin";
 import { AppContext } from '@context/AppContext'; 
-
+import SpinnerMolecule from "@molecules/SpinnerMolecule/SpinnerMolecule";
 
 
 function MainTemplate(){

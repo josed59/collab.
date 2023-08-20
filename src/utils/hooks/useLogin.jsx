@@ -7,10 +7,12 @@ import { AppContext } from '@context/AppContext';
 
 // definicion de clase de usuario la cual guarda los valores retornados de la api
 class UserModel {
-  constructor(name,email,userType) {
+  constructor(name,email,userType,token) {
     this.name = name;
     this.email = email;
     this.userType = userType;
+    this.token = token;
+
   }
 }
 
@@ -34,14 +36,15 @@ const useLogin = () => {
       // Manejar la respuesta exitosa del inicio de sesión
    
       if (!response.success){
-         setError();
+         setError(response.error);
          return
       }
       // si la respuesta es exitosa se genera la clase
       const userModel = new UserModel(
         response.user.name,
         response.user.email,
-        response.user.userType
+        response.user.userType,
+        response.token,
       );
       setUsername(userModel);
       setUser(userModel);
@@ -50,7 +53,7 @@ const useLogin = () => {
 
     } catch (error) {
       // Manejar el error del inicio de sesión
-      setError();
+      setError(error);
       console.log(error);
     } finally {
       onFinally();
@@ -69,6 +72,7 @@ const useLogin = () => {
      loading : state.isLoading,
      error: state.isError,
      username,
+     message : state.data?.message,
     logout
   };
 };
@@ -78,7 +82,7 @@ function SecurePath({ children }){
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!state.user) {
+    if (!state.user || state.redirect) {
       navigate('/login');
     }
   }, [state, navigate]);

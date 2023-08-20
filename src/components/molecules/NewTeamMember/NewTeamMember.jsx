@@ -1,20 +1,23 @@
-import React, { useRef,useState } from "react";
+import React, { useRef,useState,useContext } from "react";
 import { HeadingAtom } from "@atoms/HeadingAtom/HeadingAtom";
 import { Input } from "@atoms/Input/Input";
 import { Button } from "@atoms/Botton/Botton";
 import { Message } from "@atoms/Message/Message";
+import {useTeamMembers} from "@hooks/useTeamMembers";
+import { AppContext } from '@context/AppContext'; 
 
 
 import './newTeamMember.scss';
 
 function NewTeamMember(){
+    const {state} = useContext(AppContext);
+    const {insertNewTeamMember,handlerOnSubmit} =useTeamMembers();
     const formRef = useRef();
-    const [error, setError] = useState
-    ({styleName: '',
+    /*  ({styleName: '',
     styleEmail: '',
     });
     
-    const validarEmail= (email) => {
+   const validarEmail= (email) => {
         // Expresión regular para validar el formato de email
         
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -52,7 +55,7 @@ function NewTeamMember(){
             return
         }
         //createUser(newUser);
-    };
+    }; */
    
 
     return(
@@ -61,14 +64,14 @@ function NewTeamMember(){
                 <HeadingAtom level={1}>Team Members</HeadingAtom>
                 <HeadingAtom level={2}>New</HeadingAtom> 
             </section>
-            <form ref={formRef} className="newMemberForm" onSubmit={handlerOnSubmit}>
+            <form ref={formRef} className="newMemberForm" onSubmit={(event) => handlerOnSubmit(event,formRef)}>
                 <div>
                     <Input 
                     inputId="Name"
                     label="Name"
                     type='text'
                     placeholder="Veronica Salazar"
-                    error = {error.styleName}
+                    error = {state.data?.styleName}
                 />
                 </div>
                 <div>
@@ -77,14 +80,14 @@ function NewTeamMember(){
                     label="Email"
                     type='text'
                     placeholder="email@example.com"
-                    error = {error.styleEmail}
+                    error = {state.data?.styleEmail}
                 />
                 </div>
-                { error.message &&
+                { state.data?.message &&
                     <div>
                     <Message 
-                        text = {error.message}
-                        type = "login"
+                        text = {state.data.message}
+                        type = {`login ${state.data?.style}`}
                         />
                     </div>
                 }
