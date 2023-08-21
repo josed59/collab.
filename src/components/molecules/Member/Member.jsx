@@ -8,12 +8,14 @@ import { useParams,useNavigate } from "react-router-dom";
 import './member.scss';
 import { FilterMolecule } from "@molecules/FilterMolecule/FilterMolecule";
 
+
 function Member(){
     const {slug} = useParams();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const actionAssing = () =>{
         navigate(`/assign/${slug}`);
     }
+
     return(
         <section className="Member-header"> 
                 <HeadingAtom level={1}>Team Membres</HeadingAtom>

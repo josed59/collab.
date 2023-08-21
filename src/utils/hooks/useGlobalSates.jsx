@@ -60,7 +60,7 @@ const reducerObject = (state, action) =>({
 });
   
 const reducer = (state, action) => {
-   console.log(reducerObject(state, action)[action.type])
+   console.log('global',reducerObject(state, action)[action.type])
     return (reducerObject(state, action)[action.type] || state);
 };
 

@@ -40,22 +40,18 @@ async function insertTeamMember(APIBASE,name,email,teamId,userType,token) {
   }
 
   // get Team members
-  async function getTeamMembers (APIBASE,page,pageSize,sort,token) {
+  async function getTeamMembers (APIBASE,params,token) {
     try {
-      const URL = `${APIBASE}/TeamMember`
+      const url = new URL(`${APIBASE}/TeamMember`);
 
-      // ADD params
-      if (page !== undefined) {
-        URL += `?page=${page}`;
-      }
-      if (pageSize !== undefined) {
-        URL += page !== undefined ? `&pageSize=${pageSize}` : `?pageSize=${pageSize}`;
-      }
-      if (sort !== undefined) {
-        URL += page !== undefined || pageSize !== undefined ? `&sort=${sort}` : `?sort=${sort}`;
-      }
+      // Agregar los parámetros a la URL
+      for (const key in params) {
+        url.searchParams.append(key, params[key]);
+        }
+        
+        url.toString();
 
-      const response = await fetch(URL, {
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

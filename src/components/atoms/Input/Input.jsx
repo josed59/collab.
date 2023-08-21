@@ -1,7 +1,7 @@
 import React from "react";
 import './input.scss';
 
-function Input ({type,placeholder,inputId,label,error,module}){
+function Input ({type,placeholder,inputId,label,error,module,onChange}){
     
     return(
         <div className="container-button">
@@ -12,6 +12,7 @@ function Input ({type,placeholder,inputId,label,error,module}){
                 className={`input ${error ? 'error' : ''} ${module ? module : ''}`}
                 type={type} 
                 placeholder={placeholder}
+                onChange={onChange}
             />
         </div>
     );

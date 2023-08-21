@@ -85,7 +85,7 @@ function SecurePath({ children }){
     if (!state.user || state.redirect) {
       navigate('/login');
     }
-  }, [state, navigate]);
+  }, [state.user, navigate,state.redirect]);
   
   return(
     <>

@@ -38,12 +38,18 @@ label{
 .input:focus{
     border: 0px;
     box-shadow: 0 0 10px styles.$cblack_200;
+ 
 }
+
+.input:focus::placeholder {
+    visibility: hidden; /* Oculta el texto del placeholder al hacer foco */
+  }
 
 .input::placeholder{
     color: styles.$cblack_250;
     text-align: center;
     padding-left: 8px;
+   
 }
 
 .error::placeholder{

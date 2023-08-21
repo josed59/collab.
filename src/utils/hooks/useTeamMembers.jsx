@@ -1,12 +1,19 @@
-import React,{cloneElement, useContext} from "react";
-import {insertTeamMember} from '@services/teamMemberService.js';
+import React,{cloneElement, useContext,useEffect,useRef, useState} from "react";
+import {insertTeamMember,getTeamMembers} from '@services/teamMemberService.js';
 import { API_BASE } from '@services/apiData';
 import { AppContext } from '@context/AppContext';
+import useInfiniteScroll from "@hooks/useInfiniteScroll";
+import { debounce } from "lodash";
 
 
 function useTeamMembers() {
     const { setLoading,setError, onFinally, state,onSuccess,unauthorized} = useContext(AppContext);
+    const [inputValue, setInputValue] = useState("");
+    const [previousTeamMembers, setPreviousTeamMembers] = useState([]);
+    const containerRef = useRef(null); // Referencia al contenedor
 
+     
+     
     //Insert new user this version we need to send by default teamID 1 and usertype 2
     const insertNewTeamMember = async (data,form) => {
         try {
@@ -37,6 +44,95 @@ function useTeamMembers() {
           onFinally();
         } 
       };
+
+      // Get Team members
+      const getUserTeamMembers = async (page,search) => {
+
+
+        try {
+          setLoading();
+          const params = {
+            page: page,
+            pageSize: calculateInitialItems(),
+            sort: 'ASC',
+        };
+
+        if (search || inputValue) {
+          params.s = search === undefined ? inputValue : search;
+         }
+
+          const response = await getTeamMembers(API_BASE,params,state.user?.token);
+
+           //redire to login
+           if(response === 401){
+            unauthorized({message:"Session issue please login" });
+            return
+          }
+          if (!response.success){
+            let  errorMessage = response.message === undefined ?  response.error: response.message;
+            console.log(response);
+            setError({message:errorMessage });
+             return
+          }
+
+          // on success
+          let updatedTeamMembers = [];
+          if (search || inputValue) {
+            console.log('entra');
+              updatedTeamMembers = [ ...response.data.teammembers];
+           }
+           else{
+             updatedTeamMembers = [...previousTeamMembers, ...response.data.teammembers];
+           }
+          
+          onSuccess(
+            {
+              last_page : response.data.last_page,
+              page : response.data.page,
+              pageSize : response.data.pageSize,
+              teammembers : updatedTeamMembers
+            }
+          );
+
+          setPreviousTeamMembers(updatedTeamMembers);
+
+        } catch (error) {
+          // Manejar el error 
+          setError({message:error});
+          console.log('error',error);
+        } finally {
+          //onFinally();
+        }   
+        
+      };
+
+      //handle input change
+        const handleInputChange  = (event) => {
+           console.log('handleInputChange' ,event.target.value.trim());
+           const value = event.target.value.trim();
+           debouncedHandleInputChange(value);
+        }
+
+        const debouncedHandleInputChange = debounce((value) => {
+          setInputValue(value);
+          getUserTeamMembers(1,value);
+        }, 300); // Tiempo de espera en milisegundos
+      
+
+
+      //include the funtionality for scroll
+       useInfiniteScroll(getUserTeamMembers,containerRef,state.isLoading,state);
+
+
+
+      //logica para la cantidad de items por pantalla 
+      const calculateInitialItems = () => {
+        const { clientHeight } = containerRef.current;
+        const averageItemHeight = 84; // Estimación del tamaño promedio de un elemento
+        const initialItemCount = Math.ceil(clientHeight / averageItemHeight);
+        return initialItemCount;
+    };
+
     
       //Logica de formulario
       const handlerOnSubmit = (event,formRef) => {
@@ -83,7 +179,11 @@ function useTeamMembers() {
       
       return{
         insertNewTeamMember,
-        handlerOnSubmit
+        getUserTeamMembers,
+        handlerOnSubmit,
+        teammembers : state.data?.teammembers,
+        containerRef,
+        handleInputChange
       }
 }
 
