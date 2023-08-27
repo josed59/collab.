@@ -16,6 +16,10 @@ function DatepickerMolecule({idDatefrom,titlefrom,placeholderfrom,idDateto,title
     const handleEndtDateChange = (date) => {
         setEndDate(date);
     };
+    const cleardates = () => {
+      setStartDate(null);
+      setEndDate(null);
+    }
     const years = range(1990, getYear(new Date()) + 1, 1);
     const months = [
         "January",
@@ -40,9 +44,10 @@ function DatepickerMolecule({idDatefrom,titlefrom,placeholderfrom,idDateto,title
                 showIcon
                 isClearable
                 id={idDatefrom}
+                name={idDatefrom}
                 selected={startDate}
                 onChange={handleStartDateChange}
-                dateFormat="dd/MM/yyyy" 
+                dateFormat="dd-MM-yyyy" 
                 placeholderText={placeholderfrom}
                 className="custom-date-picker-input"
                 autoComplete="off"
@@ -108,9 +113,10 @@ function DatepickerMolecule({idDatefrom,titlefrom,placeholderfrom,idDateto,title
                       showIcon
                       isClearable
                       id={idDateto}
+                      name={idDateto}
                       selected={endDate}
                       onChange={handleEndtDateChange}
-                      dateFormat="dd/MM/yyyy" 
+                      dateFormat="dd-MM-yyyy" 
                       placeholderText={placeholderto}
                       className="custom-date-picker-input"
                       autoComplete="off"

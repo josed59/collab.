@@ -5,7 +5,7 @@ const CheckboxAtom = ({ label, idCheck }) => {
   return (
     <div className='checkAtom-container'>
       <label htmlFor={idCheck}>{label}</label>
-      <input type="checkbox" id={idCheck} />
+      <input type="checkbox" id={idCheck} name={idCheck} />
     </div>
   );
 };

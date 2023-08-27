@@ -1,10 +1,16 @@
 @use '@styles/_global.scss' as styles;
 
 .checkAtom-container{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    display: flex;
+    align-items: center;
+   // grid-template-columns: 1fr 1fr;
     justify-items: center;
+    gap: 30px;
 
+    label{
+        margin-right: 50px;
+    }
 
     input{
         height: 25px;

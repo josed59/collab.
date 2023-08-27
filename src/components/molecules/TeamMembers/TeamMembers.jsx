@@ -25,7 +25,7 @@ function TeamMembers(){
     //get Team members
     useEffect(() => {
         getUserTeamMembers(1); // Llama solo cuando el componente se monta
-      }, []);
+      }, [containerRef]);
 
 
 

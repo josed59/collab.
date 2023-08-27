@@ -10,6 +10,7 @@ function useTeamMembers() {
     const { setLoading,setError, onFinally, state,onSuccess,unauthorized} = useContext(AppContext);
     const [inputValue, setInputValue] = useState("");
     const [previousTeamMembers, setPreviousTeamMembers] = useState([]);
+    const [itemsPerPages, setitemsPerPages] = useState([]);
     const containerRef = useRef(null); // Referencia al contenedor
 
      
@@ -51,6 +52,8 @@ function useTeamMembers() {
 
         try {
           setLoading();
+          
+
           const params = {
             page: page,
             pageSize: calculateInitialItems(),
@@ -108,7 +111,7 @@ function useTeamMembers() {
 
       //handle input change
         const handleInputChange  = (event) => {
-           console.log('handleInputChange' ,event.target.value.trim());
+          
            const value = event.target.value.trim();
            debouncedHandleInputChange(value);
         }
@@ -121,9 +124,7 @@ function useTeamMembers() {
 
 
       //include the funtionality for scroll
-       useInfiniteScroll(getUserTeamMembers,containerRef,state.isLoading,state);
-
-
+        useInfiniteScroll(getUserTeamMembers,containerRef,state.isLoading,state);
 
       //logica para la cantidad de items por pantalla 
       const calculateInitialItems = () => {

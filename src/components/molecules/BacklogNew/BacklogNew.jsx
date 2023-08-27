@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect } from "react";
 import { HeadingAtom } from "@atoms/HeadingAtom/HeadingAtom";
 import { Input } from "@atoms/Input/Input";
 import { DropdownAtom } from "@atoms/DropdownAtom/DropdownAtom";
@@ -8,20 +8,30 @@ import { Button } from  "@atoms/Botton/Botton";
 import { Message } from "@atoms/Message/Message";
 import {DatepickerMolecule} from "@molecules/DatepickerMolecule/DatepickerMolecule";
 import './backlogNew.scss';
+import  useTask  from "@hooks/useTask";
 
-const dataDropdown = [
+/* const dataDropdown = [
     { valor: '1', nombre: 'S' },
     { valor: '2', nombre: 'M' },
     { valor: '3', nombre: 'L' },
     { valor: '4', nombre: 'XL' },
-  ];
+  ]; */
 
 function BacklogNew(){
-    const ref = useRef();
+    const [dataDropdown,
+           getTaskSizes,
+           containerRef,
+           handlerOnSubmit,
+           state
+        ] = useTask();
 
-    const handlerOnSubmit = () => {
-        console.log('llega');
-    }
+
+    useEffect(() => {
+        console.log("use effect");
+        getTaskSizes();
+      }, []);
+    
+
     return(
 
         <section className="backlogNew-container">
@@ -29,7 +39,7 @@ function BacklogNew(){
                 <HeadingAtom level={1}>Backlog</HeadingAtom>
             </div>
             <div className="Backlog-center">
-                <form ref={ref} className="backlogNewForm" id="backlogNewForm"  onSubmit={handlerOnSubmit}>
+                <form ref={containerRef} className="backlogNewForm" id="backlogNewForm"  onSubmit={(event)=>handlerOnSubmit(event)}>
                 <div>
                     <Input 
                     inputId="title"
@@ -70,13 +80,13 @@ function BacklogNew(){
                         idCheck="userTest"
                     />
                 </div>
-                { /* error &&
+                { state.data?.message &&
                     <div>
                     <Message 
-                        text = "User / Email or Password do not match"
-                        type = "login"
+                        text = {state.data.message}
+                        type = {`login ${state.data?.style}`}
                         />
-                    </div> */
+                    </div>
                 }
                 <div>
                     <Button type='primary' label='Add' disable=''/> 

@@ -1,12 +1,15 @@
 @use '@styles/_global.scss' as styles;
 
 .dropdownAtom-container{
-
+    box-sizing: border-box;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 80px;
-    margin-left: 25px;
+    gap: 75px; 
+    margin-left: 20px; 
+    //margin-left: 50px;
+
     
     
     label{
@@ -17,6 +20,7 @@
         line-height: 2.8re,;
         letter-spacing: -0.03em;
         color: styles.$cblack_250;
+        padding-left: 15px;
     }
 
     select{

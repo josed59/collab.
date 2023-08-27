@@ -10,7 +10,7 @@ function DropdownAtom({data,idDropdown,label}){
     return(
         <div className="dropdownAtom-container">
             <label htmlFor={idDropdown}>{label}</label>
-            <select id={idDropdown}>
+            <select id={idDropdown} name={idDropdown}>
                 {data.map((item, index) => (
                 <option key={index} value={item.valor}>
                     {item.nombre}

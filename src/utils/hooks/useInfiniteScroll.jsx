@@ -4,27 +4,44 @@ function useInfiniteScroll(getUserTeamMembers, containerRef, isLoading,state) {
     const page  = useRef(1);
 
     useEffect(() => {
-        const getPaginated = () => {
-            if (!isLoading) { // Evitar múltiples solicitudes mientras se está cargando
-                const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-                const scrollIsBottom = (scrollTop + clientHeight) >= (scrollHeight - 35);
+        
+        const options = {
+          root: containerRef.current,
+          rootMargin: '0px',
+          threshold: 1,
+        };
+    
+        const observer = new IntersectionObserver(handleIntersect, options);
 
-                if (scrollIsBottom &&(state?.data?.last_page > page.current )) {
-                    // Lógica para cargar más contenido
-                    page.current = page.current+1;
-                    getUserTeamMembers(page.current);
-                }
+    
+    
+        if (containerRef.current) {
+            const lastItem = containerRef.current.lastChild;
+            if (lastItem) {
+              observer.observe(lastItem);
+            }
+        }
+
+        
+        return () => {
+            if (containerRef.current) {
+                const lastItem = containerRef.current.lastChild;
+                if (lastItem) {
+                observer.unobserve(lastItem);
+        }
             }
         };
-
-        // Agregar el evento de scroll
-        window.addEventListener('scroll', getPaginated);
-
-        // Limpieza del efecto
-        return () => {
-            window.removeEventListener('scroll', getPaginated);
-        };
-    }, [getUserTeamMembers, isLoading]);
+    }, [containerRef,state]);
+    
+    
+    const handleIntersect = (entries) => {
+        const [entry] = entries;
+      if (entry.isIntersecting && !isLoading && (state?.data?.last_page > page.current )) {
+          page.current = page.current+1;
+          getUserTeamMembers(page.current);
+      }
+    };
+    
 
 }
 
