@@ -3,7 +3,7 @@ import { HeadingAtom } from "@atoms/HeadingAtom/HeadingAtom";
 import { Iconic } from "@atoms/Iconic/iconic";
 import "./cardTaskMolecule.scss"
  
-function CardTaskMolecule ({taskTitle,state,handler,size,beginDate, dueDate,description,color,name,handlerTask}){
+function CardTaskMolecule ({taskTitle,state,handler,size,beginDate, dueDate,description,color,name,handlerTask,nameicon}){
 
     return(
         <div className="carTaskdMolecule-container" onClick={handler}>
@@ -33,7 +33,7 @@ function CardTaskMolecule ({taskTitle,state,handler,size,beginDate, dueDate,desc
                         <div className="bottom-right">
                             <span> 
                                 {
-                                    name !=='UN' ? name : <Iconic icon="task" action={handlerTask}/>
+                                    nameicon !=='Unassigned' ? nameicon : <Iconic icon="task" action={handlerTask}/>
                                 }
                             </span>
                         </div>

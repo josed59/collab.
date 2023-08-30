@@ -1,7 +1,13 @@
 import React, {useEffect, useState, useRef} from "react";
+import { useLocation } from 'react-router-dom';
 
-function useInfiniteScroll(getUserTeamMembers, containerRef, isLoading,state) {
+function useInfiniteScroll(getUserTeamMembers, containerRef, isLoading,state,inputValue,filter) {
     const page  = useRef(1);
+    const location = useLocation();
+
+    useEffect(() => {
+        page.current = 1;
+    }, [inputValue,filter,location]);
 
     useEffect(() => {
         
@@ -13,10 +19,11 @@ function useInfiniteScroll(getUserTeamMembers, containerRef, isLoading,state) {
     
         const observer = new IntersectionObserver(handleIntersect, options);
 
-    
+        
     
         if (containerRef.current) {
             const lastItem = containerRef.current.lastChild;
+            console.log(lastItem);
             if (lastItem) {
               observer.observe(lastItem);
             }
@@ -36,11 +43,13 @@ function useInfiniteScroll(getUserTeamMembers, containerRef, isLoading,state) {
     
     const handleIntersect = (entries) => {
         const [entry] = entries;
+        console.log(entry.isIntersecting,!isLoading,state?.data?.last_page , page.current,entry.isIntersecting && !isLoading && (state?.data?.last_page > page.current ));
       if (entry.isIntersecting && !isLoading && (state?.data?.last_page > page.current )) {
           page.current = page.current+1;
           getUserTeamMembers(page.current);
       }
     };
+    
     
 
 }

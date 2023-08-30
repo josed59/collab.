@@ -18,16 +18,15 @@ import  useTask  from "@hooks/useTask";
   ]; */
 
 function BacklogNew(){
-    const [dataDropdown,
+    const {dataDropdown,
            getTaskSizes,
            containerRef,
            handlerOnSubmit,
            state
-        ] = useTask();
+     } = useTask();
 
 
     useEffect(() => {
-        console.log("use effect");
         getTaskSizes();
       }, []);
     

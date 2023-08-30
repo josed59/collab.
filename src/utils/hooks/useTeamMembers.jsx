@@ -3,6 +3,7 @@ import {insertTeamMember,getTeamMembers} from '@services/teamMemberService.js';
 import { API_BASE } from '@services/apiData';
 import { AppContext } from '@context/AppContext';
 import useInfiniteScroll from "@hooks/useInfiniteScroll";
+import { useNavigate } from "react-router-dom";
 import { debounce } from "lodash";
 
 
@@ -12,8 +13,7 @@ function useTeamMembers() {
     const [previousTeamMembers, setPreviousTeamMembers] = useState([]);
     const [itemsPerPages, setitemsPerPages] = useState([]);
     const containerRef = useRef(null); // Referencia al contenedor
-
-     
+    const navigate = useNavigate();
      
     //Insert new user this version we need to send by default teamID 1 and usertype 2
     const insertNewTeamMember = async (data,form) => {
@@ -56,7 +56,7 @@ function useTeamMembers() {
 
           const params = {
             page: page,
-            pageSize: calculateInitialItems(),
+            pageSize: calculateInitialItems(84,containerRef),
             sort: 'ASC',
         };
 
@@ -124,48 +124,47 @@ function useTeamMembers() {
 
 
       //include the funtionality for scroll
-        useInfiniteScroll(getUserTeamMembers,containerRef,state.isLoading,state);
+        useInfiniteScroll(getUserTeamMembers,containerRef,state.isLoading,state,inputValue);
 
-      //logica para la cantidad de items por pantalla 
-      const calculateInitialItems = () => {
-        const { clientHeight } = containerRef.current;
-        const averageItemHeight = 84; // Estimación del tamaño promedio de un elemento
-        const initialItemCount = Math.ceil(clientHeight / averageItemHeight);
-        return initialItemCount;
-    };
-
-    
-      //Logica de formulario
-      const handlerOnSubmit = (event,formRef) => {
-        event.preventDefault();
-        const formData = new FormData(formRef.current);
-        const newUser = {
+        
+        //Handlers**************************************************************************************************
+        //Logica de formulario
+        const handlerOnSubmit = (event,formRef) => {
+          event.preventDefault();
+          const formData = new FormData(formRef.current);
+          const newUser = {
             Email: formData.get('Email'),
             Name: formData.get('Name').trim(),
-        };
+          };
         
-
-        if(!newUser.Email || 
+          
+          if(!newUser.Email || 
             !newUser.Name ){
             setError({
                 styleName: 'error',
                 styleEmail: 'error',
                 message:'All fields must be completed.'
-            })
-            return
-        }
-        if(!validarEmail(newUser.Email)){
-
-            setError({
+              })
+              return
+            }
+            if(!validarEmail(newUser.Email)){
+              
+              setError({
                 styleName: '',
                 styleEmail: 'error',
                 message:'Invalid email address'
-            })
+              })
             return
-        }
+          }
         //if validations are ok then will proceed  with call to api
         insertNewTeamMember(newUser,formData);
       };
+
+      //hadler on clic card molecule
+      const handlerClickCard = (member)=>{
+        navigate(`/member/${member}`);
+    }
+      // Utils ******************************************************************************************************
       
       //clear form
       const clearInputs = (form) => {
@@ -174,9 +173,16 @@ function useTeamMembers() {
           const input = document.getElementById(key);
           if (input) {
             input.value = '';
-    }
-  });
+          }
+        });
       }
+      //logica para la cantidad de items por pantalla 
+      const calculateInitialItems = (ht,container) => {
+        const { clientHeight } = container.current;
+        const averageItemHeight = ht; // Estimación del tamaño promedio de un elemento
+        const initialItemCount = Math.ceil(clientHeight / averageItemHeight);
+        return initialItemCount;
+    };
       
       return{
         insertNewTeamMember,
@@ -184,7 +190,9 @@ function useTeamMembers() {
         handlerOnSubmit,
         teammembers : state.data?.teammembers,
         containerRef,
-        handleInputChange
+        handleInputChange,
+        calculateInitialItems,
+        handlerClickCard
       }
 }
 

@@ -3,6 +3,9 @@ import {get,post, put} from "@services/apiData";
 const ENDPOINT = {
     INSERT_TASK :  'Task/InsertTask',
     GETSIZES : 'task/GetSize',
+    GETSTATES: 'Task/getstates',
+    GETALLTASK: 'Task/GetAllTask',
+    ASSINGTASK: 'Task/AssingTaks',
 };
 
 
@@ -41,9 +44,11 @@ async function getSizes(token){
 }
 
 //get all task
-async function getAllTask(){
+async function getAllTask(params,token){
     try{
-
+        
+        const response = await get(ENDPOINT.GETALLTASK,token,params);
+        return response;
     }catch(error){
         console.error('Error get Task:', error);
         return error;
@@ -51,13 +56,30 @@ async function getAllTask(){
 }
 
 //Get States
-async function getStates(){
+async function getStates(token){
     try{
-
+        const response = await get(ENDPOINT.GETSTATES,token);
+        return response;
     }catch(error){
         console.error('Error get states:', error);
         return error;
     }
 }
 
-export {insertTask,getSizes};
+async function assingTaskUser(taskId,userId,token){
+    try{
+        const response = await put(ENDPOINT.ASSINGTASK, token, 
+            {
+                taskID : taskId,
+                userId : userId
+            }
+            );
+            return response;
+
+    }catch(error){
+        console.error('Error Creating new Task:', error);
+        return error;
+    }
+}
+
+export {insertTask,getSizes,getStates,getAllTask,assingTaskUser};

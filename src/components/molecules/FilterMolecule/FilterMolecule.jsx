@@ -3,7 +3,7 @@ import { Iconic } from "@atoms/Iconic/iconic";
 import { HeadingAtom } from "@atoms/HeadingAtom/HeadingAtom";
 import './filterMolecule.scss';
 
-const itemsData = [
+/* const itemsData = [
     {
         item:"En Curso",
         color:"green"
@@ -20,9 +20,9 @@ const itemsData = [
         item:"En fila",
         color:"black"
     },
-]
+] */
 
-function FilterMolecule(){
+function FilterMolecule({itemsData,action}){
     const [showfilter,setshowFilter]=useState(true);
     const toggleFilter = () =>{
         setshowFilter(!showfilter);
@@ -37,9 +37,12 @@ function FilterMolecule(){
                 <Iconic icon="arrow" action={toggleFilter}/>
             </div>
             <div className={showfilter ?"noShow":"filter-container"}>
-                <ul className={showfilter && "noShow"}>
+                <ul className={showfilter ? "noShow" : undefined}>
                     {itemsData.map((item, index) => (
-                        <li key={index} className={item.color}>{item.item}</li>
+                        <li key={index} 
+                            className={item.color}
+                            onClick={() => action(item.name)}
+                        >{item.item}</li>
                     ))}
                 </ul>
             </div>

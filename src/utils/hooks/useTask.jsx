@@ -1,12 +1,55 @@
 import React,{useRef, useState,useContext} from "react";
-import {insertTask,getSizes} from '@services/taskService.js'; 
-import { AppContext } from '@context/AppContext'
+import {insertTask,getSizes,getStates,getAllTask,assingTaskUser} from '@services/taskService.js'; 
+import { AppContext } from '@context/AppContext';
+import useInfiniteScroll from "@hooks/useInfiniteScroll";
+import {useTeamMembers} from "@hooks/useTeamMembers";
+import { debounce } from "lodash";
+import { useNavigate } from "react-router-dom";
+
+
+
+
 
 function useTask(){
-    const { setLoading,setError, onFinally, state,onSuccess,unauthorized} = useContext(AppContext);
+    const { setLoading,setError, onFinally, state,onSuccess,unauthorized,setMessage} = useContext(AppContext);
     const token = state?.user?.token;
+    const navigate = useNavigate();
     const containerRef = useRef(null); // Referencia al contenedor
+    const {calculateInitialItems} = useTeamMembers();
+    const [inputValue, setInputValue] = useState("");
+    const [filter, setFilter] = useState("");
     const [dataDropdown , setDataDropdown] = useState([]);
+    const [previousTask, setpreviousTask] = useState([]);
+    const [select,setSelect] = useState(initialStatesSelect);
+
+    //initial state for select
+    const initialStatesSelect = {
+        userId: "",
+        isSelected:false
+    };
+
+    const mappingState = {
+        Pending : {
+            item : "Pending",
+            color:"black"
+        },
+        InProgress : {
+            item : "In Progress",
+            color:"green"
+        },
+        Completed : {
+            item : "Completed",
+            color:"blue"
+        },
+        Delayed:{
+            item:"Delayed",
+            color:"red"
+        },
+        StandBy:{
+            item:"Stand By",
+            color:"yellow"
+        }
+    } 
 
     //insert new task
     const insertnewTask = async (newTask) =>{
@@ -69,15 +112,13 @@ function useTask(){
     //get States
     const getAllStates = async () =>{
         try{       
-              const data = await getSizes (token);
+              const data = await getStates (token);
               const  isValitated  = handleResponse(data);
               
               if(!isValitated){
                return
               }
-              setDataDropdown( sizesStructure(data.data));
-              console.log('dataDropdown',dataDropdown);
-   
+              setDataDropdown( taskStatesStructure(data.data));
    
           }catch(error){
                // Manejar el error 
@@ -91,7 +132,103 @@ function useTask(){
     }
     
     //Get all Task
+    const getTasks = async (page,search,onFilter) =>{
+        try{
+            setLoading();
+            const params = {
+                page: page,
+                pageSize: calculateInitialItems(150,containerRef),
+                sort: 'ASC',
+            };
 
+            if (search || inputValue) {
+                params.s = search === undefined ? inputValue : search;
+               }
+
+            if (onFilter) {
+                params.state =  onFilter;
+            }
+    
+    
+            const response = await getAllTask(params,token);
+            const  isValitated  = handleResponse(response); 
+            if(!isValitated){
+             return
+            }
+            
+             // on success
+         const tasksWithStateInfo = mapTasksWithStateInfo(response.data.task);
+          let updateTask = [];
+          if (search || inputValue || onFilter) {
+           
+            updateTask = [ ...tasksWithStateInfo];
+           }
+           else{
+             updateTask = [...previousTask, ...tasksWithStateInfo];
+           } 
+          
+
+            onSuccess(
+                {
+                  last_page : response.data.last_page,
+                  page : response.data.page,
+                  pageSize : response.data.pageSize,
+                  tasks : updateTask
+                });
+
+                setpreviousTask(updateTask); 
+
+
+        }catch(error){
+            // Manejar el error 
+            setError({message:error});
+            console.log('error',error);
+        }   
+        finally {
+            onFinally();
+        } 
+
+    }
+
+    //asing task call api
+    const asingTask = async (taskid,userid) =>{
+        try{
+            setLoading();
+            const response = await assingTaskUser(taskid,userid,token);
+            const  isValitated  = handleResponse(response); 
+            if(!isValitated){
+             return
+            }
+            setMessage({message:'Task Assinged', style:'green',error:false});
+        
+        }catch(error){
+            // Manejar el error 
+            setMessage({message:error,error:true});
+            console.log('error',error);
+        }   
+        finally {
+            onFinally();
+        } 
+    }
+
+
+    
+      //handle input change
+      const handleInputChange  = (event) => {
+          
+        const value = event.target.value.trim();
+        debouncedHandleInputChange(value);
+     }
+
+
+     const debouncedHandleInputChange = debounce((value) => {
+       setInputValue(value);
+       getTasks(1,value);
+     }, 300); // Tiempo de espera en milisegundos
+   
+
+     //include the funtionality for scroll
+     useInfiniteScroll(getTasks,containerRef,state.isLoading,state,inputValue,filter);
 
     
     // handler response
@@ -111,7 +248,7 @@ function useTask(){
       return  true 
     }
 
-    //
+    //new task
     const handlerOnSubmit = (event) =>{
         event.preventDefault();
         const formData = new FormData(containerRef.current);
@@ -173,6 +310,41 @@ function useTask(){
 
     }
 
+    
+
+    //Handler action ******************************************************************************************
+    // Assing Task
+    const handlerTask = (taskid) => {
+        navigate(`/assigntask/${taskid}`);
+    }
+
+    //pick team member
+    const handlerTeamMemberClick =(userId) =>{
+        setSelect(
+            {
+                userId : userId,
+                isSelected : true
+            }
+            );
+            
+    }
+
+    //handler Assing
+    const handlerAssing = (event,taskid) =>{
+        event.preventDefault();
+        if(!select || !select.userId){
+            setMessage({
+                error:true,
+                styleName: 'error',
+                styleEmail: 'error',
+                message:"Must select one Team Member"
+            })
+            return
+        }
+        asingTask(taskid,select?.userId);
+    }
+
+    //UTILS ****************************************************************************************************
 
     //clear form
     const clearInputs = () => {
@@ -202,6 +374,21 @@ function useTask(){
         return dataDropdownTemp;
     }
 
+    //Load data states into view
+    const taskStatesStructure = (data) =>{
+       
+        const dataDropdownTemp = data.map(item => ({
+            valor: item.taskStateId.toString(),
+            item: mappingState[item.description].item,
+            color: mappingState[item.description].color,
+            name: item.description
+          }));
+          console.log(dataDropdownTemp); 
+        return dataDropdownTemp;
+    }
+
+
+
     //format date 
     function formatDateToYYYYMMDD(inputDateString) {
         
@@ -230,15 +417,53 @@ function useTask(){
         return parsedDate;
     }
 
-    
+    //handle on click filter 
+    const OnClickFilter = (filter) =>{
+        setFilter(filter)
+        getTasks(1, undefined, filter)
+        console.log("OnClickFilter",filter);
+    }
 
-    return[
+    //mapping task
+    const mapTasksWithStateInfo = (tasks) => {
+        return tasks.map(task => {
+            const { taskStateName } = task;
+            const { item, color } = mappingState[taskStateName];
+            return {
+                ...task,
+                item,
+                color
+            };
+        });
+    }
+
+      // Find the index of the first space in the input string
+    function getValueUntilFirstSpace(inputString) {
+        const firstSpaceIndex = inputString.indexOf(' ');
+    
+        if (firstSpaceIndex !== -1) {
+            return inputString.substring(0, firstSpaceIndex);
+        } else {
+            return inputString;
+        }
+    }
+
+    return{
         dataDropdown,
         getTaskSizes,
+        getTasks,
         containerRef,
         handlerOnSubmit,
-        state
-    ]
+        state,
+        getAllStates,
+        OnClickFilter,
+        getValueUntilFirstSpace,
+        handleInputChange,
+        handlerTask,
+        handlerTeamMemberClick,
+        select,
+        handlerAssing
+    }
 }
 
 export default useTask;

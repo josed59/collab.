@@ -14,9 +14,21 @@ async function handleResponse(response) {
     return data;
   }
   
-  export async function get(endpoint, token) {
+  export async function get(endpoint, token,params) {
     try {
-      const response = await fetch(`${API_BASE}/${endpoint}`, {
+
+      const url = new URL(`${API_BASE}/${endpoint}`);
+      console.log('get',params);
+
+       if (params && Object.keys(params).length > 0) {
+        // Agregar los parámetros a la URL
+        for (const key in params) {
+          url.searchParams.append(key, params[key]);
+          }
+      }
+          
+          url.toString();
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + token

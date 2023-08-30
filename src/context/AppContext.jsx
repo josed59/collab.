@@ -5,7 +5,7 @@ const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
   //const [user, setUser] = useState(null);
-  const {state, onSetUser,setLoading,setError, onFinally, onSuccess,onUnauthorized} = useGlobalState();
+  const {state, onSetUser,setLoading,setError, onFinally, onSuccess,onUnauthorized,setMessage} = useGlobalState();
 
   const setUser = (user) =>{
     onSetUser(user);
@@ -18,7 +18,7 @@ const AppProvider = ({ children }) => {
 
 
   return (
-    <AppContext.Provider value={{ state, setUser,setUser,setLoading,setError, onFinally, user : state.user,onSuccess,unauthorized }}>
+    <AppContext.Provider value={{ state, setUser,setUser,setLoading,setError, onFinally, user : state.user,onSuccess,unauthorized,setMessage }}>
       {children}
     </AppContext.Provider>
   );

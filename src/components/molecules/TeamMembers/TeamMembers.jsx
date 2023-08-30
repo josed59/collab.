@@ -5,22 +5,22 @@ import { Iconic } from "../../atoms/Iconic/iconic";
 import { CardMolecule } from "@molecules/CardMolecule/CardMolecule";
 import './teamMember.scss';
 import { useNavigate } from "react-router-dom";
-import { useTeamMembers } from "@hooks/useTeamMembers";
+import { useTeamMembers } from "@hooks/useTeamMembers"; 
 
 
 
 function TeamMembers(){
     const navigate = useNavigate();
-    const {getUserTeamMembers,teammembers,containerRef,handleInputChange} =useTeamMembers();
+    const {getUserTeamMembers,teammembers,containerRef,handleInputChange,handlerClickCard} =useTeamMembers();
     //const {  loading, containerRef } = useInfiniteScroll();
    
 
     const handlerClick = ()=>{
         navigate('/newteammembers');
     }
-    const handlerClickCard = (member)=>{
+    /* const handlerClickCard = (member)=>{
         navigate(`/member/${member}`);
-    }
+    } */
 
     //get Team members
     useEffect(() => {

@@ -2,7 +2,8 @@
 
 .carTaskdMolecule-container{
     width: 328px;
-    height: 105px;
+    height: auto;
+    max-height: 300px;
     background-color: styles.$cwhite;
     border-radius: 12px;
     padding: 8px;
@@ -68,14 +69,18 @@
 .state-red{
     color: styles.$cred;
 }
-.state-green{
+.green{
   color: styles.$cgreen;
 }
-.state-blue{
+.blue{
   color: styles.$cblue;
 }
-.state-black{
+.black{
   color: styles.$cblack_250;
+}
+
+.yellow{
+  color: styles.$cyellow;
 }
 
 // Seccion de la fecha y nombre 

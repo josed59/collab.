@@ -5,7 +5,8 @@ const initialState = {
     isError: false,
     data: null,
     user: null,
-    redirect :false
+    redirect :false,
+    errorMessage : null,
   };
 
 const ACTIONS = {
@@ -14,6 +15,7 @@ const ACTIONS = {
     SET_SUCCESS: 'SET_SUCCESS',
     FETCH_ERROR: 'FETCH_ERROR',
     SET_USER: 'SET_USER',
+    ERRORMESSAGE: 'ERRORMESSAGE'
   };
 
 const reducerObject = (state, action) =>({
@@ -21,7 +23,9 @@ const reducerObject = (state, action) =>({
         ...state, 
         isLoading: true, 
         isError: false,
-        redirect :false 
+        redirect :false, 
+        errorMessage : null
+
     },
     [ACTIONS.FETCH_FINALLY]: {
       ...state,
@@ -41,9 +45,11 @@ const reducerObject = (state, action) =>({
       isError: false,
       user: action.payload,
       redirect :false,
+      errorMessage : null
       },
     [ACTIONS.SET_SUCCESS]:{ 
       ...state,
+        errorMessage : null,
         isLoading: false,
         isError: false,
         redirect :false,
@@ -51,12 +57,19 @@ const reducerObject = (state, action) =>({
           },
     [ACTIONS.UNAUTHORIZED]:{ 
       ...state,
+      errorMessage : null,
       redirect : true,
       isLoading: false,
       isError: true,
       data: action.payload, 
       user: null,
           },
+    [ACTIONS.MESSAGE]:{
+      ...state,
+      errorMessage : action.payload,
+      isError: action.payload?.error,
+      isLoading: false,
+    }
 });
   
 const reducer = (state, action) => {
@@ -93,7 +106,13 @@ const reducer = (state, action) => {
     //Acticion para setear loading y error en null
     const onUnauthorized = (data) =>{
       dispatch({ type: ACTIONS.UNAUTHORIZED, payload: data})
+    }
+
+    //Acticion para setear loading y error en null
+    const setMessage = (data) =>{
+      dispatch({ type: ACTIONS.MESSAGE, payload: data})
     } 
+
 
     return{
         state,
@@ -102,7 +121,8 @@ const reducer = (state, action) => {
         setError,
         onFinally,
         onSuccess,
-        onUnauthorized
+        onUnauthorized,
+        setMessage
     }
 
 
