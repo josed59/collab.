@@ -1,11 +1,11 @@
-const API_BASE = 'http://192.168.1.132:5400/api';
+const API_BASE = 'http://192.168.50.16:5400/api';
 
 async function handleResponse(response) {
     const data = await response.json();
     
     if (!response.ok) {
       if (response.status === 401) {
-        console.error('Acceso no autorizado:', data);
+        //console.error('Acceso no autorizado:', data);
         return response.status;
       } else {
         throw new Error(data.error);
@@ -18,7 +18,7 @@ async function handleResponse(response) {
     try {
 
       const url = new URL(`${API_BASE}/${endpoint}`);
-      console.log('get',params);
+      //console.log('get',params);
 
        if (params && Object.keys(params).length > 0) {
         // Agregar los parámetros a la URL
@@ -37,7 +37,7 @@ async function handleResponse(response) {
   
       return handleResponse(response);
     } catch (error) {
-      console.error('Error:', error);
+      //console.error('Error:', error);
       throw error;
     }
   }
@@ -55,7 +55,7 @@ async function handleResponse(response) {
   
       return handleResponse(response);
     } catch (error) {
-      console.error('Error:', error);
+      //console.error('Error:', error);
       throw error;
     }
   }
@@ -73,7 +73,7 @@ async function handleResponse(response) {
   
       return handleResponse(response);
     } catch (error) {
-      console.error('Error:', error);
+      //console.error('Error:', error);
       throw error;
     }
   }

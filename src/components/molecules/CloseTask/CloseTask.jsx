@@ -3,26 +3,31 @@ import { HeadingAtom } from "@atoms/HeadingAtom/HeadingAtom";
 import { TextareaAtom } from "@atoms/TextareaAtom/TextareaAtom";
 import {DatepickerMolecule} from "@molecules/DatepickerMolecule/DatepickerMolecule";
 import { Button } from  "@atoms/Botton/Botton";
-
+import  useEditBacklog  from "@hooks/useEditBacklog";
+import { useParams } from "react-router-dom";
+import { Message } from "@atoms/Message/Message";
 
 import './closeTask.scss'
 
 function CloseTask (){
-    const refcloseTask = useRef();
-    const handlerOnSubmit = (e) => {
-        e.preventDefault;
-    };
+    const {
+        state,
+        refEditTask,
+        handlerClose
+    } = useEditBacklog();
+    const {slug} = useParams();
+
     return(
         <section className="closetask-container">
             <div className="closetask-header-title">
                  <HeadingAtom level={1}>Backlog</HeadingAtom>
             </div>
             <div className="closetask-header-subtitle">
-                <HeadingAtom level={2}>Juppiter Espress</HeadingAtom>
+                <HeadingAtom level={2}>{state.data?.tasks?.title}</HeadingAtom>
                 <span className={`closetask`} >Close Task</span>
             </div>
             <div className="closetask-center">
-            <form ref={refcloseTask} className="EditbacklogForm" id="EditbacklogForm"  onSubmit={handlerOnSubmit}>
+            <form ref={refEditTask} className="EditbacklogForm" id="EditbacklogForm"  onSubmit={(event) =>handlerClose(event,slug)}>
                     <div className="Backlog-date">
                         <DatepickerMolecule 
                             idDatefrom="closedate"
@@ -39,14 +44,14 @@ function CloseTask (){
                             label="Comment"
                         />
                     </div>
-                    { /* error &&
-                        <div>
-                        <Message 
-                            text = "User / Email or Password do not match"
-                            type = "login"
-                            />
-                        </div> */
-                    }
+                    { state.errorMessage &&
+                    <div>
+                    <Message 
+                        text = {state.errorMessage?.message}
+                        type = {`login ${state.errorMessage?.style}`}
+                        />
+                    </div>
+                     }
                     <div className="EditbacklogForm-button">
                         <Button type='primary' label='Close' disable=''/> 
                     </div>

@@ -73,7 +73,6 @@ async function insertTeamMember(APIBASE,name,email,teamId,userType,token) {
         return data;
       }
   
-  
       // Manejo exitoso de la respuesta
       return data;
     } catch (error) {
@@ -82,6 +81,8 @@ async function insertTeamMember(APIBASE,name,email,teamId,userType,token) {
       return error;
     }
   }
+
+ 
   
   
   export  {insertTeamMember,getTeamMembers};

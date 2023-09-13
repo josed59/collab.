@@ -5,6 +5,7 @@ import { AppContext } from '@context/AppContext';
 import useInfiniteScroll from "@hooks/useInfiniteScroll";
 import { useNavigate } from "react-router-dom";
 import { debounce } from "lodash";
+import { useLogin } from "@hooks/useLogin";
 
 
 function useTeamMembers() {
@@ -14,13 +15,17 @@ function useTeamMembers() {
     const [itemsPerPages, setitemsPerPages] = useState([]);
     const containerRef = useRef(null); // Referencia al contenedor
     const navigate = useNavigate();
+    const {getToken} = useLogin();
+    //in case user refresh and sesion is still alive get token from localstorage
+    const token =  state.user?.token ? state.user.token : getToken();
      
     //Insert new user this version we need to send by default teamID 1 and usertype 2
     const insertNewTeamMember = async (data,form) => {
         try {
           setLoading();
           
-          const response = await insertTeamMember(API_BASE,data.Name,data.Email,'1','2',state.user.token);
+          
+          const response = await insertTeamMember(API_BASE,data.Name,data.Email,'1','2',token);
           
           //redirec to login
           if(response === 401){
@@ -51,9 +56,9 @@ function useTeamMembers() {
 
 
         try {
+         
           setLoading();
-          
-
+        
           const params = {
             page: page,
             pageSize: calculateInitialItems(84,containerRef),
@@ -64,7 +69,7 @@ function useTeamMembers() {
           params.s = search === undefined ? inputValue : search;
          }
 
-          const response = await getTeamMembers(API_BASE,params,state.user?.token);
+          const response = await getTeamMembers(API_BASE,params,token);
 
            //redire to login
            if(response === 401){
@@ -192,7 +197,8 @@ function useTeamMembers() {
         containerRef,
         handleInputChange,
         calculateInitialItems,
-        handlerClickCard
+        handlerClickCard,
+        state
       }
 }
 

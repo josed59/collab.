@@ -5,14 +5,14 @@ import useInfiniteScroll from "@hooks/useInfiniteScroll";
 import {useTeamMembers} from "@hooks/useTeamMembers";
 import { debounce } from "lodash";
 import { useNavigate } from "react-router-dom";
+import { useLogin } from "@hooks/useLogin";
 
 
 
 
 
 function useTask(){
-    const { setLoading,setError, onFinally, state,onSuccess,unauthorized,setMessage} = useContext(AppContext);
-    const token = state?.user?.token;
+    const { setLoading,setError, onFinally, state,onSuccess,unauthorized,setMessage,clearData} = useContext(AppContext);
     const navigate = useNavigate();
     const containerRef = useRef(null); // Referencia al contenedor
     const {calculateInitialItems} = useTeamMembers();
@@ -21,6 +21,9 @@ function useTask(){
     const [dataDropdown , setDataDropdown] = useState([]);
     const [previousTask, setpreviousTask] = useState([]);
     const [select,setSelect] = useState(initialStatesSelect);
+    const {getToken} = useLogin();
+    //in case user refresh and sesion is still alive get token from localstorage
+    const token =  state.user?.token ? state.user.token : getToken();
 
     //initial state for select
     const initialStatesSelect = {
@@ -65,7 +68,7 @@ function useTask(){
             ,token);
             
             const  isValitated  = handleResponse(response);
-            console.log(isValitated);
+            //console.log(isValitated);
             if(!isValitated){
                 return
                }
@@ -75,7 +78,7 @@ function useTask(){
         }catch(error){
              // Manejar el error 
              setError({message:error});
-             console.log('error',error);
+             //console.log('error',error);
         }finally {
             onFinally();
         } 
@@ -85,7 +88,7 @@ function useTask(){
     //Get Task Sizes
     const getTaskSizes = async () =>{
        try{       
-         console.log("getTaskSizes");
+         //console.log("getTaskSizes");
            const data = await getSizes (token);
            const  isValitated  = handleResponse(data);
            
@@ -93,13 +96,13 @@ function useTask(){
             return
            }
            setDataDropdown( sizesStructure(data.data));
-           console.log('dataDropdown',dataDropdown);
+           //console.log('dataDropdown',dataDropdown);
 
 
        }catch(error){
             // Manejar el error 
             setError({message:error});
-            console.log('error',error);
+            //console.log('error',error);
         }   
         finally {
             onFinally();
@@ -123,7 +126,7 @@ function useTask(){
           }catch(error){
                // Manejar el error 
                setError({message:error});
-               console.log('error',error);
+               //console.log('error',error);
            }   
            finally {
                onFinally();
@@ -144,10 +147,12 @@ function useTask(){
             if (search || inputValue) {
                 params.s = search === undefined ? inputValue : search;
                }
-
-            if (onFilter) {
-                params.state =  onFilter;
+            if(onFilter !== 'All'){
+                if (onFilter || filter)  {
+                    params.state =  onFilter ? onFilter : filter;
+                }
             }
+
     
     
             const response = await getAllTask(params,token);
@@ -182,7 +187,7 @@ function useTask(){
         }catch(error){
             // Manejar el error 
             setError({message:error});
-            console.log('error',error);
+            //console.log('error',error);
         }   
         finally {
             onFinally();
@@ -204,7 +209,7 @@ function useTask(){
         }catch(error){
             // Manejar el error 
             setMessage({message:error,error:true});
-            console.log('error',error);
+            //console.log('error',error);
         }   
         finally {
             onFinally();
@@ -241,7 +246,7 @@ function useTask(){
       }
       if (!response.success){
         let  errorMessage = response.message === undefined ?  response.error: response.message;
-        console.log(errorMessage);
+        //console.log(errorMessage);
         setError({message:"Error inserting Task" });
          return  false
       }
@@ -260,7 +265,7 @@ function useTask(){
             sizeid:formData.get('sizeid'),
             userTest:formData.get('userTest') === "on" ? true : false,
             }
-        console.log('formData',newTask)
+        //console.log('formData',newTask)
 
         if (!newTask.title) {
 
@@ -314,10 +319,23 @@ function useTask(){
 
     //Handler action ******************************************************************************************
     // Assing Task
-    const handlerTask = (taskid) => {
+    const handlerTask = (taskid,event) => {
+        //console.log("assigntask");
+        event.stopPropagation();
         navigate(`/assigntask/${taskid}`);
     }
 
+     //Add new task redirect
+    const handlerAdd =() => {
+        navigate('/backlognewtask');
+    }
+
+    //redirec to edit task
+    const handlerToEditTask = (taskid) => {
+        //console.log("edittask");
+        navigate(`/edittask/${taskid}`);
+    }
+ 
     //pick team member
     const handlerTeamMemberClick =(userId) =>{
         setSelect(
@@ -328,6 +346,8 @@ function useTask(){
             );
             
     }
+
+    
 
     //handler Assing
     const handlerAssing = (event,taskid) =>{
@@ -367,23 +387,32 @@ function useTask(){
 
     //Load data sizes into the view layer
     const sizesStructure =  (data) =>{
+
         const dataDropdownTemp = data.map(item => ({
             valor: item.taskSizeId.toString(),
             nombre: item.taskDescription
           }));
+
         return dataDropdownTemp;
     }
 
     //Load data states into view
     const taskStatesStructure = (data) =>{
+        const all = {
+            valor: "all",
+            item: "All",
+            color: "black",
+            name: "All"
+        }
        
-        const dataDropdownTemp = data.map(item => ({
+        const dataDropdownTemp = [all,...data.map(item => ({
             valor: item.taskStateId.toString(),
             item: mappingState[item.description].item,
             color: mappingState[item.description].color,
             name: item.description
-          }));
-          console.log(dataDropdownTemp); 
+          }))];
+        //dataDropdownTemp = [...dataDropdownTemp,...all];
+          //console.log(dataDropdownTemp); 
         return dataDropdownTemp;
     }
 
@@ -393,7 +422,7 @@ function useTask(){
     function formatDateToYYYYMMDD(inputDateString) {
         
         const inputDate = new Date(parseDateFromString(inputDateString));
-        console.log(inputDate);
+        //console.log(inputDate);
         const formattedDate = `${inputDate.getFullYear()}-${(inputDate.getMonth() + 1).toString().padStart(2, '0')}-${inputDate.getDate().toString().padStart(2, '0')}`;
         return formattedDate;
     }
@@ -419,9 +448,14 @@ function useTask(){
 
     //handle on click filter 
     const OnClickFilter = (filter) =>{
-        setFilter(filter)
-        getTasks(1, undefined, filter)
-        console.log("OnClickFilter",filter);
+        if(filter !== 'All'){
+            setFilter(filter);
+            getTasks(1, undefined, filter);
+        }else{
+            setFilter(null);
+            getTasks(1, undefined,filter);
+        }
+       
     }
 
     //mapping task
@@ -462,7 +496,12 @@ function useTask(){
         handlerTask,
         handlerTeamMemberClick,
         select,
-        handlerAssing
+        handlerAssing,
+        handlerAdd,
+        handlerToEditTask,
+        mapTasksWithStateInfo,
+        clearData,
+        formatDateToYYYYMMDD
     }
 }
 

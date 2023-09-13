@@ -6,6 +6,7 @@ const ENDPOINT = {
     GETSTATES: 'Task/getstates',
     GETALLTASK: 'Task/GetAllTask',
     ASSINGTASK: 'Task/AssingTaks',
+    UPDATETASK: 'Task/updateTask',
 };
 
 
@@ -82,4 +83,18 @@ async function assingTaskUser(taskId,userId,token){
     }
 }
 
-export {insertTask,getSizes,getStates,getAllTask,assingTaskUser};
+ //Update Task
+ async function updateTask(params,token){
+    try{
+        const response = await put(ENDPOINT.UPDATETASK,token,params);
+        return response;
+
+    }catch(error){
+        // Manejo de errores
+      console.error('Error on update:', error);
+      return error;
+    }
+  
+}
+
+export {insertTask,getSizes,getStates,getAllTask,assingTaskUser,updateTask};

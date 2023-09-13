@@ -23,7 +23,6 @@ function useInfiniteScroll(getUserTeamMembers, containerRef, isLoading,state,inp
     
         if (containerRef.current) {
             const lastItem = containerRef.current.lastChild;
-            console.log(lastItem);
             if (lastItem) {
               observer.observe(lastItem);
             }
@@ -43,7 +42,7 @@ function useInfiniteScroll(getUserTeamMembers, containerRef, isLoading,state,inp
     
     const handleIntersect = (entries) => {
         const [entry] = entries;
-        console.log(entry.isIntersecting,!isLoading,state?.data?.last_page , page.current,entry.isIntersecting && !isLoading && (state?.data?.last_page > page.current ));
+       // console.log(entry.isIntersecting,!isLoading,state?.data?.last_page , page.current,entry.isIntersecting && !isLoading && (state?.data?.last_page > page.current ));
       if (entry.isIntersecting && !isLoading && (state?.data?.last_page > page.current )) {
           page.current = page.current+1;
           getUserTeamMembers(page.current);

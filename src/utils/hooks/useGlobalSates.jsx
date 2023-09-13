@@ -15,7 +15,9 @@ const ACTIONS = {
     SET_SUCCESS: 'SET_SUCCESS',
     FETCH_ERROR: 'FETCH_ERROR',
     SET_USER: 'SET_USER',
-    ERRORMESSAGE: 'ERRORMESSAGE'
+    ERRORMESSAGE: 'ERRORMESSAGE',
+    UNAUTHORIZED : 'UNAUTHORIZED',
+    CLEARDATA : 'CLEARDATA',
   };
 
 const reducerObject = (state, action) =>({
@@ -30,7 +32,6 @@ const reducerObject = (state, action) =>({
     [ACTIONS.FETCH_FINALLY]: {
       ...state,
       isLoading: false,
-      redirect :false,
     },
     [ACTIONS.FETCH_ERROR]:{ 
     ...state,
@@ -69,11 +70,15 @@ const reducerObject = (state, action) =>({
       errorMessage : action.payload,
       isError: action.payload?.error,
       isLoading: false,
+    },
+    [ACTIONS.CLEARDATA]:{
+      ...state,
+      data: null
     }
 });
   
 const reducer = (state, action) => {
-   console.log('global',reducerObject(state, action)[action.type])
+   console.log('global',action.type,reducerObject(state, action)[action.type])
     return (reducerObject(state, action)[action.type] || state);
 };
 
@@ -113,6 +118,12 @@ const reducer = (state, action) => {
       dispatch({ type: ACTIONS.MESSAGE, payload: data})
     } 
 
+    //clear data
+    const clearData = (data) =>{
+      dispatch({ type: ACTIONS.CLEARDATA})
+    } 
+
+
 
     return{
         state,
@@ -122,7 +133,8 @@ const reducer = (state, action) => {
         onFinally,
         onSuccess,
         onUnauthorized,
-        setMessage
+        setMessage,
+        clearData
     }
 
 

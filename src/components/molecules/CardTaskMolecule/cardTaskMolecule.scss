@@ -111,7 +111,7 @@
 @media (min-width: styles.$layout-breakpoint-small) {
   .carTaskdMolecule-container{
     width: 95%;
-    height: 60px;
+    min-height: 60px;
     overflow: hidden;
     display: flex;
     flex-direction: row;

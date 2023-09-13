@@ -6,20 +6,21 @@ import { getMonth, getYear } from 'date-fns';
 import range from "lodash/range";
 
 
-function DatepickerMolecule({idDatefrom,titlefrom,placeholderfrom,idDateto,titleto,placeholderto,isOnlyFrom}){
+function DatepickerMolecule({idDatefrom,titlefrom,placeholderfrom,idDateto,titleto,placeholderto,isOnlyFrom,fromDate,toDate}){
 
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
-    const handleStartDateChange = (date) => {
-        setStartDate(date);
-    };
-    const handleEndtDateChange = (date) => {
-        setEndDate(date);
-    };
-    const cleardates = () => {
-      setStartDate(null);
-      setEndDate(null);
-    }
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+  };
+  const handleEndtDateChange = (date) => {
+    setEndDate(date);
+  };
+  const cleardates = () => {
+    setStartDate(null);
+    setEndDate(null);
+  }
+  
     const years = range(1990, getYear(new Date()) + 1, 1);
     const months = [
         "January",
@@ -45,7 +46,7 @@ function DatepickerMolecule({idDatefrom,titlefrom,placeholderfrom,idDateto,title
                 isClearable
                 id={idDatefrom}
                 name={idDatefrom}
-                selected={startDate}
+                selected={startDate || fromDate}
                 onChange={handleStartDateChange}
                 dateFormat="dd-MM-yyyy" 
                 placeholderText={placeholderfrom}
@@ -114,7 +115,7 @@ function DatepickerMolecule({idDatefrom,titlefrom,placeholderfrom,idDateto,title
                       isClearable
                       id={idDateto}
                       name={idDateto}
-                      selected={endDate}
+                      selected={endDate || toDate}
                       onChange={handleEndtDateChange}
                       dateFormat="dd-MM-yyyy" 
                       placeholderText={placeholderto}

@@ -11,7 +11,7 @@ import { useTeamMembers } from "@hooks/useTeamMembers";
 
 function TeamMembers(){
     const navigate = useNavigate();
-    const {getUserTeamMembers,teammembers,containerRef,handleInputChange,handlerClickCard} =useTeamMembers();
+    const {getUserTeamMembers,teammembers,containerRef,handleInputChange,handlerClickCard,state} =useTeamMembers();
     //const {  loading, containerRef } = useInfiniteScroll();
    
 

@@ -5,7 +5,6 @@ import { Iconic } from "@atoms/Iconic/iconic";
 import { CardTaskMolecule } from "@molecules/CardTaskMolecule/CardTaskMolecule";
 import {FilterMolecule} from "@molecules/FilterMolecule/FilterMolecule";
 import './backlog.scss';
-import { useNavigate } from "react-router-dom";
 import  useTask  from "@hooks/useTask";
 
 
@@ -20,20 +19,22 @@ function Backlog(){
         getValueUntilFirstSpace,
         containerRef,
         handleInputChange,
-        handlerTask
+        handlerTask,
+        handlerAdd,
+        handlerToEditTask,
+        clearData
      } = useTask();
      const data = state.data?.tasks;
-    const navigate =  useNavigate();
-    const handlerAdd =() => {
-        navigate('/backlognewtask');
-    }
- 
 
+    
     useEffect(() => {
-        console.log("use effect");
+        console.log("use effect backlog")
         getAllStates();
         getTasks(1);
-      }, [containerRef]);
+        clearData();
+      }, []);
+
+ 
 
     return(
         <section className="backlog-container">
@@ -66,25 +67,27 @@ function Backlog(){
                 </div>
             </div>
             <div className="backlog-center-container" ref={containerRef} >
-            { data &&
-                 data.map(task => (
-                    
-                      <CardTaskMolecule 
-                        key={task.taskId}
-                         taskTitle={task.title}
-                         description={task.description}
-                         state={task.item}
-                         size={task.taskSizeName}
-                         beginDate={task.from}
-                         dueDate={task.to}
-                         color={task.color}
-                         name={task.assign === 'Unassigned' ?'': getValueUntilFirstSpace(task.assign)}
-                         handlerTask = {()=>handlerTask(task.taskId)}
-                         nameicon = {task.assign}
-                     />
-                  ))  
-                  
-                } 
+            {data && Array.isArray(data) && data.length > 0 ? (
+                data.map((task) => (
+                    <CardTaskMolecule
+                    key={task.taskId}
+                    taskTitle={task.title}
+                    description={task.description}
+                    state={task.item}
+                    size={task.taskSizeName}
+                    beginDate={task.from}
+                    dueDate={task.to}
+                    color={task.color}
+                    name={task.assign === 'Unassigned' ? '' : getValueUntilFirstSpace(task.assign)}
+                    handlerTask={(event) => handlerTask(task.taskId, event)}
+                    nameicon={task.assign}
+                    handler={() => { handlerToEditTask(task.taskId) }}
+                    />
+                ))
+                ) : (
+                // Puedes mostrar un mensaje o componente alternativo si no hay datos
+                <p>No hay datos disponibles.</p>
+                )}
             </div>
         </section>
     );

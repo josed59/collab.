@@ -1,30 +1,45 @@
-import React, { useRef } from "react";
+import React, { useRef,useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { HeadingAtom } from "@atoms/HeadingAtom/HeadingAtom";
 import { Iconic } from "@atoms/Iconic/iconic";
 import { TextareaAtom } from "@atoms/TextareaAtom/TextareaAtom";
 import {DropdownAtom} from "@atoms/DropdownAtom/DropdownAtom";
+import { CheckboxAtom } from "@atoms/CheckboxAtom/CheckboxAtom";
 import { Button } from  "@atoms/Botton/Botton";
 import {DatepickerMolecule} from "@molecules/DatepickerMolecule/DatepickerMolecule";
+import { Message } from "@atoms/Message/Message";
+import TooltipsAtoms from "@atoms/TooltipsAtoms/";
 import './editBacklog.scss';
 import { useNavigate } from "react-router-dom";
+import  useTask  from "@hooks/useTask";
+import  useEditBacklog  from "@hooks/useEditBacklog";
  
-const dataDropdown = [
-    { valor: '1', nombre: 'S' },
-    { valor: '2', nombre: 'M' },
-    { valor: '3', nombre: 'L' },
-    { valor: '4', nombre: 'XL' },
-  ];
 
 function Editbacklog(){
-    const refEditTask = useRef();
-    const navigate = useNavigate();
-    const handlerOnSubmit = (e) => {
-        e.preventDefault;
-    };
-    const handlerIcon = (type,idTask) =>{
-        (type==='qa') ? navigate(`/qatask/${idTask}`) : navigate(`/closetask/${idTask}`);
-    }
-    const status = 'red';
+    const {dataDropdown,
+           getTaskSizes,
+    } = useTask();
+    const {
+        state,
+        getTasks,
+        parseDate,
+        handlerOnSubmit,
+        refEditTask,
+        handlerIcon
+    } = useEditBacklog();
+    const {slug} = useParams();
+
+
+    useEffect(() => {
+        getTaskSizes();
+        getTasks(slug);
+      }, []);
+
+
+      const from = state.data?.tasks?.from ?  parseDate(state.data?.tasks?.from) : null; 
+      const toDate = state.data?.tasks?.to ?  parseDate(state.data?.tasks?.to) : null; 
+
+
     return(
         <section className="Editbacklog-container">
         <div className="Editbacklog-header">
@@ -32,14 +47,23 @@ function Editbacklog(){
                  <HeadingAtom level={1}>Backlog</HeadingAtom>
             </div>
             <div className="Editbacklog-header-subtitle">
-                <HeadingAtom level={2}>Juppiter Espress</HeadingAtom>
-                <span className={`Editbacklog ${status}`} >Retrasado</span>
-                <Iconic icon="qa" action={() =>handlerIcon('qa',1)}/>
-                <Iconic icon="check" action={() =>handlerIcon('check',1)}/>
+                <HeadingAtom level={2}>{state.data?.tasks?.title}</HeadingAtom>
+                <span className={`Editbacklog ${state.data?.tasks?.color}`} >{state.data?.tasks?.item}</span>
+                <TooltipsAtoms text='Assing Task'>
+                    <Iconic icon="task" action={() =>handlerIcon('edit',slug)}/>
+                </TooltipsAtoms>
+                {(state.data?.tasks?.userTest === true && state.data?.tasks?.qaDate === null ) && (
+                    <TooltipsAtoms text='QA'>
+                        <Iconic icon="qa" action={() => handlerIcon('qa', slug)} />
+                    </TooltipsAtoms>
+                )}
+                <TooltipsAtoms text='Close'>
+                    <Iconic icon="check" action={() =>handlerIcon('check',slug)}/>
+                </TooltipsAtoms>
             </div>
         </div>
         <div className="Editbacklog-center">
-            <form ref={refEditTask} className="EditbacklogForm" id="EditbacklogForm"  onSubmit={handlerOnSubmit}>
+            <form ref={refEditTask} className="EditbacklogForm" id="EditbacklogForm"  onSubmit={(event) => handlerOnSubmit(event,slug)}>
                     <div>
                         <TextareaAtom 
                             inputId="description"
@@ -47,7 +71,7 @@ function Editbacklog(){
                             placeholder="Brief Task Description"
                             label="Description"
                             isDisabled = 'true'
-                            defaultValue = 'Engage Jupiter Express for outer solar system.'
+                            defaultValue = {state.data?.tasks?.description}
                         />
                     </div>
                     <div className="Backlog-date">
@@ -58,6 +82,8 @@ function Editbacklog(){
                             idDateto="duendate"
                             titleto="To"
                             placeholderto="To"
+                            fromDate={from}
+                            toDate = {toDate}
                         />
                     </div>
                     <div>
@@ -73,16 +99,22 @@ function Editbacklog(){
                             data={dataDropdown}
                             idDropdown="sizeid"
                             label="Size"
+                            selectedValue = {state.data?.tasks?.taskSizeId}
                         />
                     </div>
-                    { /* error &&
-                        <div>
-                        <Message 
-                            text = "User / Email or Password do not match"
-                            type = "login"
-                            />
-                        </div> */
-                    }
+                    <CheckboxAtom 
+                        label="Stand By"
+                        idCheck="isStandBy"
+                        checked = {state.data?.tasks?.taskStateName === 'StandBy'}
+                    />
+                    { state.errorMessage &&
+                    <div>
+                    <Message 
+                        text = {state.errorMessage?.message}
+                        type = {`login ${state.errorMessage?.style}`}
+                        />
+                    </div>
+                     }
                     <div>
                         <Button type='primary' label='Update' disable=''/> 
                     </div>
