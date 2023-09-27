@@ -23,8 +23,14 @@ async function handleResponse(response) {
        if (params && Object.keys(params).length > 0) {
         // Agregar los parámetros a la URL
         for (const key in params) {
-          url.searchParams.append(key, params[key]);
+          if (Array.isArray(params[key])) {
+              params[key].forEach(value => {
+                  url.searchParams.append(key, value);
+              });
+          } else {
+              url.searchParams.append(key, params[key]);
           }
+        }
       }
           
           url.toString();

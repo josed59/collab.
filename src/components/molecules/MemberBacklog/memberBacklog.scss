@@ -35,6 +35,10 @@
         gap: 8px;
         overflow-y: scroll;
     }
+
+    .memberBacklog-bottom{
+        margin-bottom: 12px;
+    }
 }
 
 @media (min-width: styles.$layout-breakpoint-small) {

@@ -20,8 +20,11 @@ function useTask(){
     const [filter, setFilter] = useState("");
     const [dataDropdown , setDataDropdown] = useState([]);
     const [previousTask, setpreviousTask] = useState([]);
+    const [searchUser, setSearchUser] = useState();
+    const [ isNotUserId, setIsNotUserId] = useState();
     const [select,setSelect] = useState(initialStatesSelect);
     const {getToken} = useLogin();
+    const [teamMemberView , setTeamMemberView] = useState();
     //in case user refresh and sesion is still alive get token from localstorage
     const token =  state.user?.token ? state.user.token : getToken();
 
@@ -135,7 +138,7 @@ function useTask(){
     }
     
     //Get all Task
-    const getTasks = async (page,search,onFilter) =>{
+    const getTasks = async (page,search,onFilter,userId,isTeamMemberView,NotUserId) =>{
         try{
             setLoading();
             const params = {
@@ -152,9 +155,29 @@ function useTask(){
                     params.state =  onFilter ? onFilter : filter;
                 }
             }
+            
+            if(userId || searchUser){
+                console.log('entro userid')
+                params.searchUser = userId === undefined ? searchUser : userId;
+                if(userId){
+                    setSearchUser(userId);
+                } 
+            }
 
-    
-    
+            if(isTeamMemberView || teamMemberView){
+                params.state =  ['Pending','InProgress','Delayed','StandBy'];
+                if(isTeamMemberView){
+                    setTeamMemberView(true);
+                } 
+            }
+
+            if(NotUserId || isNotUserId){
+                params.isNotUserId = NotUserId === undefined ? isNotUserId : NotUserId;
+                if(NotUserId){
+                    setIsNotUserId(NotUserId);
+                } 
+            }
+
             const response = await getAllTask(params,token);
             const  isValitated  = handleResponse(response); 
             if(!isValitated){

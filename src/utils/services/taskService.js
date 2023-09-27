@@ -6,6 +6,7 @@ const ENDPOINT = {
     GETSTATES: 'Task/getstates',
     GETALLTASK: 'Task/GetAllTask',
     ASSINGTASK: 'Task/AssingTaks',
+    ASSINGMASSIVETASK: 'Task/AssingMassiveTaks',
     UPDATETASK: 'Task/updateTask',
 };
 
@@ -67,6 +68,7 @@ async function getStates(token){
     }
 }
 
+//Assing task 
 async function assingTaskUser(taskId,userId,token){
     try{
         const response = await put(ENDPOINT.ASSINGTASK, token, 
@@ -78,9 +80,28 @@ async function assingTaskUser(taskId,userId,token){
             return response;
 
     }catch(error){
-        console.error('Error Creating new Task:', error);
+        console.error('Error Assing  Task:', error);
         return error;
     }
+}
+
+//Assing massive Task
+
+async function assingMassiveTask(taskIds,userId,token){
+    try{
+        const response = await put(ENDPOINT.ASSINGMASSIVETASK, token, 
+            {
+                taskIds : taskIds,
+                userId : userId
+            }
+            );
+            return response;
+
+    }catch(error){
+        console.error('Error Assing  Tasks:', error);
+        return error;
+    }
+
 }
 
  //Update Task
@@ -97,4 +118,4 @@ async function assingTaskUser(taskId,userId,token){
   
 }
 
-export {insertTask,getSizes,getStates,getAllTask,assingTaskUser,updateTask};
+export {insertTask,getSizes,getStates,getAllTask,assingTaskUser,updateTask,assingMassiveTask};

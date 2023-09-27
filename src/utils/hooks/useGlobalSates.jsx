@@ -18,6 +18,7 @@ const ACTIONS = {
     ERRORMESSAGE: 'ERRORMESSAGE',
     UNAUTHORIZED : 'UNAUTHORIZED',
     CLEARDATA : 'CLEARDATA',
+    MESSAGE : 'MESSAGE'
   };
 
 const reducerObject = (state, action) =>({
@@ -79,6 +80,8 @@ const reducerObject = (state, action) =>({
   
 const reducer = (state, action) => {
    console.log('global',action.type,reducerObject(state, action)[action.type])
+   console.log('global action', action)
+
     return (reducerObject(state, action)[action.type] || state);
 };
 
@@ -119,7 +122,8 @@ const reducer = (state, action) => {
     } 
 
     //clear data
-    const clearData = (data) =>{
+    const clearData = () =>{
+      console.log('clear')
       dispatch({ type: ACTIONS.CLEARDATA})
     } 
 

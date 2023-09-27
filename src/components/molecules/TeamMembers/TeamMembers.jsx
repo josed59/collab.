@@ -55,7 +55,7 @@ function TeamMembers(){
                     <CardMolecule
                       key={member.userId}
                       percentage={`${member.capacity} %`}
-                      alert="high"
+                      alert={member.color}
                       name={member.userName} // Usa los datos del estado local
                       handler={() => handlerClickCard(member.userId)}
                     />

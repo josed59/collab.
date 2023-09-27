@@ -3,10 +3,10 @@ import { HeadingAtom } from "@atoms/HeadingAtom/HeadingAtom";
 import { Iconic } from "@atoms/Iconic/iconic";
 import "./cardTaskMolecule.scss"
  
-function CardTaskMolecule ({taskTitle,state,handler,size,beginDate, dueDate,description,color,name,handlerTask,nameicon}){
+function CardTaskMolecule ({taskTitle,state,handler,size,beginDate, dueDate,description,color,name,handlerTask,nameicon,select}){
 
     return(
-        <div className="carTaskdMolecule-container" onClick={handler}>
+        <div className={`carTaskdMolecule-container ${select ? "select" : ""}`} onClick={handler}>
             <div className="top">
                 <div className="top-left">
                     <HeadingAtom level={2}>{taskTitle}</HeadingAtom>

@@ -8,6 +8,9 @@ import menuIcon from '@icon/menu.png';
 
 function Header({handleClickMenuButton}){
     const {user} = useContext(AppContext);
+    const firstLetter = (name) =>{
+        return name?.charAt(0).toUpperCase();
+    }
     return(
         <nav className="container-nav">
             <ul>
@@ -25,7 +28,7 @@ function Header({handleClickMenuButton}){
                 </li>
                 <li>
                     
-                    <UserLogo text="V"/>
+                    <UserLogo text={firstLetter(user?.name)}/>
                 </li>
             </ul>     
         </nav>

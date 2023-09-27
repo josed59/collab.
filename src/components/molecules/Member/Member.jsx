@@ -1,39 +1,49 @@
-import React  from "react";
+import React,{useEffect}  from "react";
 import { HeadingAtom } from "@atoms/HeadingAtom/HeadingAtom";
 import { Input } from "@atoms/Input/Input";
 import { Iconic } from "@atoms/Iconic/iconic";
 import { PercentageAtom } from "@atoms/PercentageAtom/PercentageAtom";
 import { CardTaskMolecule } from "@molecules/CardTaskMolecule/CardTaskMolecule";
-import { useParams,useNavigate } from "react-router-dom";
 import './member.scss';
 import { FilterMolecule } from "@molecules/FilterMolecule/FilterMolecule";
+import  useMember  from "@hooks/useMember";
+import { useParams } from "react-router-dom";
 
+let memberData = {};
 
 function Member(){
     const {slug} = useParams();
-    const navigate = useNavigate();
-    const actionAssing = () =>{
-        navigate(`/assign/${slug}`);
-    }
+    const {apiCalls,Utils,member,handlers} = useMember();
+    
+    const data = Utils.state.data?.tasks;
+    useEffect(()=>{
+        apiCalls.getAllStates();
+        apiCalls.getUser(slug);
+        apiCalls.getTasks(1,null,'All',slug);
+        Utils.clearData();
+    },[]
+    );
+
 
     return(
         <section className="Member-header"> 
                 <HeadingAtom level={1}>Team Membres</HeadingAtom>
                 <div className="status-assing-container">
                     <div className="information">
-                        <PercentageAtom alert="high">100%</PercentageAtom>
-                        <HeadingAtom level={2}>{slug}</HeadingAtom>
+                        <PercentageAtom alert={member?.teammember.color}>{member?.teammember.capacity}%</PercentageAtom>
+                        <HeadingAtom level={2}>{member?.teammember.userName}</HeadingAtom>
                     </div>
                     <div className="assing">
                         <HeadingAtom level={3}>Assing:</HeadingAtom>
-                        <Iconic icon="task" action={actionAssing}/>
+                        <Iconic icon="task" action={() => handlers.actionAssing(slug)}/>
                     </div>
                     <div className="search-item">
-                        <Input
+                    <Input
                             type="text"
                             placeholder="Search..."
                             inputId="searchTeamMember"
                             module="Search"
+                            onChange={handlers.handleInputChange}
                             />
                     </div>
                     {/* <div className="new-item">
@@ -41,50 +51,33 @@ function Member(){
                         <Iconic icon="arrow" action={toggleFilter}/>
                     </div> */}
                     <div className="memberFilter-container">
-                        <FilterMolecule/>
+                    <FilterMolecule
+                                itemsData = {Utils.dataDropdown}
+                                action = {Utils.OnClickFilter}
+                            />
                     </div>
                 </div>
-                <section className="cardTask-container">
-                    <CardTaskMolecule 
-                        taskTitle="Jupiter Express"
-                        description="Engage Jupiter express for outer solar system"
-                        state="Retrasado"
-                        size="M"
-                        beginDate="13-06-2023"
-                        dueDate="13-07-2023"
-                        color="state-red"
-                        name={slug}
-                    />
-                    <CardTaskMolecule 
-                        taskTitle="Jupiter Express"
-                        description="Engage Jupiter express for outer solar system"
-                        state="En Curso"
-                        size="M"
-                        beginDate="13-06-2023"
-                        dueDate="13-07-2023"
-                        color="state-green"
-                        name={slug}
-                    />
-                    <CardTaskMolecule 
-                        taskTitle="Jupiter Express"
-                        description="Engage Jupiter express for outer solar system"
-                        state="Finalizado"
-                        size="M"
-                        beginDate="13-06-2023"
-                        dueDate="13-07-2023"
-                        color="state-blue"
-                        name={slug}
-                    />
-                     <CardTaskMolecule 
-                        taskTitle="Jupiter Express"
-                        description="Engage Jupiter express for outer solar system"
-                        state="En Fila"
-                        size="M"
-                        beginDate="13-06-2023"
-                        dueDate="13-07-2023"
-                        color="state-black"
-                        name={slug}
-                    />
+                <section className="cardTask-container" ref={Utils.containerRef}>
+                {data && Array.isArray(data) && data.length > 0 ? (
+                    data.map((task) => (
+                        <CardTaskMolecule
+                        key={task.taskId}
+                        taskTitle={task.title}
+                        description={task.description}
+                        state={task.item}
+                        size={task.taskSizeName}
+                        beginDate={task.from}
+                        dueDate={task.to}
+                        color={task.color}
+                        name={task.assign === 'Unassigned' ? '' : Utils.getValueUntilFirstSpace(task.assign)}
+                        nameicon={task.assign}
+                        handler={() => { handlers.handlerToEditTask(task.taskId) }}
+                        />
+                    ))
+                    ) : (
+                    // Puedes mostrar un mensaje o componente alternativo si no hay datos
+                    <p>No hay datos disponibles.</p>
+                )}
                 </section>
                 
               
