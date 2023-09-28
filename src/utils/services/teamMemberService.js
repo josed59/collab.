@@ -1,3 +1,10 @@
+import {put} from "@services/apiData";
+// ENDPOINTS
+const ENDPOINT = {
+    DELETEMEMBER: 'TeamMember/deleteTeamMember',
+};
+
+
 async function insertTeamMember(APIBASE,name,email,teamId,userType,token) {
     try {
       const response = await fetch(`${APIBASE}/TeamMember`, {
@@ -82,7 +89,21 @@ async function insertTeamMember(APIBASE,name,email,teamId,userType,token) {
     }
   }
 
+  //delete Team member from team
+  async function deleteMember(params,token){
+    try{
+        const response = await put(ENDPOINT.DELETEMEMBER,token,params);
+        return response;
+
+    }catch(error){
+        // Manejo de errores
+      console.error('Error on update:', error);
+      return error;
+    }
+  
+}
+
  
   
   
-  export  {insertTeamMember,getTeamMembers};
+  export  {insertTeamMember,getTeamMembers,deleteMember};

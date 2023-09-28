@@ -6,6 +6,7 @@ import { PercentageAtom } from "@atoms/PercentageAtom/PercentageAtom";
 import { CardTaskMolecule } from "@molecules/CardTaskMolecule/CardTaskMolecule";
 import './member.scss';
 import { FilterMolecule } from "@molecules/FilterMolecule/FilterMolecule";
+import  TooltipsAtoms  from "@atoms/TooltipsAtoms/";
 import  useMember  from "@hooks/useMember";
 import { useParams } from "react-router-dom";
 
@@ -36,6 +37,10 @@ function Member(){
                     <div className="assing">
                         <HeadingAtom level={3}>Assing:</HeadingAtom>
                         <Iconic icon="task" action={() => handlers.actionAssing(slug)}/>
+                        <TooltipsAtoms text="Delete Member">
+                            <Iconic icon="delete" action={() => handlers.actionAssing(slug)}/>
+                        </TooltipsAtoms>
+
                     </div>
                     <div className="search-item">
                     <Input

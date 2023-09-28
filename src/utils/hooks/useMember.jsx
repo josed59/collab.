@@ -1,7 +1,7 @@
 import React, {useState, useContext} from "react";
 import { AppContext } from '@context/AppContext';
 import { API_BASE } from '@services/apiData';
-import {getTeamMembers} from '@services/teamMemberService.js';
+import {getTeamMembers,deleteMember} from '@services/teamMemberService.js';
 import { useLogin } from "@hooks/useLogin";
 import  useTask  from "@hooks/useTask";
 import { useParams,useNavigate } from "react-router-dom";
@@ -31,6 +31,31 @@ export default function useMember() {
             let teammember = response.data.teammembers[0];
             console.log('teammember',teammember);
             SetMember({teammember})
+        }catch(error){
+            // Manejar el error 
+            setMessage({message:error,error:true});
+            //console.log('error',error);
+        }   
+        finally {
+            onFinally();
+        } 
+    }
+
+    //Delete user from team
+    const deleteUser = async userId =>{
+        try{
+            const params = {
+                TeamId: 1,
+                UserId:userId
+            };
+            setLoading();
+            const response = await deleteMember(params,token);
+            const  isValitated  = handleResponse(response); 
+            if(!isValitated){
+             return
+            }
+            navigate("/teammenberscheck");
+            
         }catch(error){
             // Manejar el error 
             setMessage({message:error,error:true});

@@ -71,3 +71,15 @@
     margin: 0px;
     cursor: pointer;
 }
+
+.delete{
+    display: inline-block;
+    background-image: url('@icon/Delete.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    margin: 0px;
+    cursor: pointer;
+}

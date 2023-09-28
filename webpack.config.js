@@ -22,6 +22,7 @@ module.exports = {
     '@services': path.resolve(__dirname, 'src/utils/services/'),
     '@hooks': path.resolve(__dirname, 'src/utils/hooks/'),
     '@icon': path.resolve(__dirname, 'src/assets/icon/'),
+    '@images': path.resolve(__dirname, 'src/assets/images/'),
     '@context': path.resolve(__dirname, 'src/context/'),
 
 
@@ -69,6 +70,10 @@ module.exports = {
       patterns: [
         {
           from: path.resolve(__dirname, "src", "assets/icon"),
+          to: "assets/icon"
+        },
+        {
+          from: path.resolve(__dirname, "src", "assets/images"),
           to: "assets/images"
         }
       ]
