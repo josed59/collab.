@@ -93,6 +93,11 @@ export default function useMember() {
       }
       return  true 
     }
+
+    //handler modal on cancel
+    const onCancel = () =>{
+        //Cancel acction
+    }
     
     const actionAssing = (slug) =>{
         navigate(`/assign/${slug}`);
