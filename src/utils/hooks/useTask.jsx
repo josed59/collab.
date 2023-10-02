@@ -428,12 +428,17 @@ function useTask(){
             name: "All"
         }
        
-        const dataDropdownTemp = [all,...data.map(item => ({
-            valor: item.taskStateId.toString(),
-            item: mappingState[item.description].item,
-            color: mappingState[item.description].color,
-            name: item.description
-          }))];
+        const dataDropdownTemp = [
+            all,
+            ...data
+              .filter(item => item.description !== 'Deleted')
+               .map(item => ({
+                valor: item.taskStateId.toString(),
+                item: mappingState[item.description].item,
+                color: mappingState[item.description].color,
+                name: item.description
+              })) 
+          ];
         //dataDropdownTemp = [...dataDropdownTemp,...all];
           //console.log(dataDropdownTemp); 
         return dataDropdownTemp;

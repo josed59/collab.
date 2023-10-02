@@ -1,4 +1,4 @@
-import React,{useEffect}  from "react";
+import React,{useEffect,useState}  from "react";
 import { HeadingAtom } from "@atoms/HeadingAtom/HeadingAtom";
 import { Input } from "@atoms/Input/Input";
 import { Iconic } from "@atoms/Iconic/iconic";
@@ -7,6 +7,7 @@ import { CardTaskMolecule } from "@molecules/CardTaskMolecule/CardTaskMolecule";
 import './member.scss';
 import { FilterMolecule } from "@molecules/FilterMolecule/FilterMolecule";
 import  TooltipsAtoms  from "@atoms/TooltipsAtoms/";
+import MessageModal from "@molecules/MessageModal";
 import  useMember  from "@hooks/useMember";
 import { useParams } from "react-router-dom";
 
@@ -15,6 +16,7 @@ let memberData = {};
 function Member(){
     const {slug} = useParams();
     const {apiCalls,Utils,member,handlers} = useMember();
+    const [showModal, setShowModal] = useState(false);
     
     const data = Utils.state.data?.tasks;
     useEffect(()=>{
@@ -24,6 +26,17 @@ function Member(){
         Utils.clearData();
     },[]
     );
+
+// Función para abrir el modal
+const openModal = () => {
+    setShowModal(true);
+  };
+  
+  // Función para cerrar el modal
+  const closeModal = () => {
+    setShowModal(false);
+  }
+
 
 
     return(
@@ -38,7 +51,7 @@ function Member(){
                         <HeadingAtom level={3}>Assing:</HeadingAtom>
                         <Iconic icon="task" action={() => handlers.actionAssing(slug)}/>
                         <TooltipsAtoms text="Delete Member">
-                            <Iconic icon="delete" action={() => handlers.actionAssing(slug)}/>
+                            <Iconic icon="delete" action={openModal}/>
                         </TooltipsAtoms>
 
                     </div>
@@ -85,7 +98,15 @@ function Member(){
                 )}
                 </section>
                 
-              
+        {showModal && 
+            <MessageModal 
+                onClose = {closeModal}  
+                isOpen ={showModal}
+                messageText={`Do you really want to delete ${member?.teammember.userName}?`}
+                messageTitle="Confirm"
+                onConfirm={()=>handlers.onConfirm(slug)}
+                />
+        }
                 
         </section>
     );

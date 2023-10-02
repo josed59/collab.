@@ -15,6 +15,8 @@ export default function useMember() {
     const token =  state.user?.token ? state.user.token : getToken();
     const { containerRef,getTasks,getValueUntilFirstSpace,handleInputChange,dataDropdown,OnClickFilter,getAllStates,handlerToEditTask } = useTask();
     const navigate = useNavigate();
+    // state for modal status
+
 
     // Call Api
     const getUser = async (userId) =>{
@@ -42,7 +44,7 @@ export default function useMember() {
     }
 
     //Delete user from team
-    const deleteUser = async userId =>{
+    const deleteUser = async (userId) =>{
         try{
             const params = {
                 TeamId: 1,
@@ -54,7 +56,7 @@ export default function useMember() {
             if(!isValitated){
              return
             }
-            navigate("/teammenberscheck");
+            navigate("/teammenbers");
             
         }catch(error){
             // Manejar el error 
@@ -94,20 +96,25 @@ export default function useMember() {
       return  true 
     }
 
-    //handler modal on cancel
-    const onCancel = () =>{
-        //Cancel acction
+    //handler modal confirm
+    const onConfirm = (UserId) =>{
+        console.log("entra");
+        deleteUser(UserId);
     }
     
     const actionAssing = (slug) =>{
         navigate(`/assign/${slug}`);
     }
 
+
+
+
     const handlers = {
         handleInputChange,
         handlerToEditTask,
         actionAssing,
-        handleResponse
+        handleResponse,
+        onConfirm
     }
 
 
