@@ -36,4 +36,11 @@
 }
 
 
+@media (min-width: styles.$layout-breakpoint-small) {
+    .heading-h2,.heading-h1{
+        white-space: nowrap;
+    }
+    
+    
+}
 

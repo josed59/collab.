@@ -40,12 +40,14 @@
 
 .teamMember-body{
     display: grid;
-    height: calc(100vh - 250px);
+    height: calc(100vh - 250px); 
     grid-template-columns: repeat(auto-fit, minmax(328px, 1fr));
     gap: 24px;
     justify-items: center;
     margin-top: 32px;
+    padding-bottom: 4px;
     overflow-y: scroll;
+    align-content: start; 
 }
 
 
@@ -54,5 +56,5 @@
         width: calc(100Vw - 300px);
         margin-top: 24px;
      }
-
+    
 }

@@ -9,6 +9,8 @@ import { useParams,useNavigate } from "react-router-dom";
 
 export default function useMember() {
     const [member,SetMember] = useState();
+    //const for menu user
+    const [menuMemember,SetMenuMembers] = useState();
     const { setLoading,setError, onFinally, state,onSuccess,unauthorized,setMessage,clearData} = useContext(AppContext);
     const {getToken} = useLogin();
     //in case user refresh and sesion is still alive get token from localstorage
@@ -68,13 +70,38 @@ export default function useMember() {
         } 
     }
 
-    
+    //get first 10 team members from list to use in menu
+    const firtsTeamMembers = async () =>{
+        try{
+            const params = {
+                pageSize: 5
+            };
+            setLoading();
+            const response = await getTeamMembers(API_BASE,params,token);
+            const  isValitated  = handleResponse(response); 
+            if(!isValitated){
+             return
+            }
+            console.log('firtsTeamMembers',menuTeamMembersFormat(response.data.teammembers));
+            SetMenuMembers(menuTeamMembersFormat(response.data.teammembers));
+
+        }catch(error){
+            // Manejar el error 
+            setMessage({message:error,error:true});
+            //console.log('error',error);
+        }   
+        finally {
+            onFinally();
+        } 
+
+    }
 
 
     const apiCalls = {
         getUser,
         getTasks,
-        getAllStates
+        getAllStates,
+        firtsTeamMembers
     }
 
     //Handlers
@@ -119,7 +146,26 @@ export default function useMember() {
 
 
     // Utils
-    const Utils = {clearData,containerRef,state,getValueUntilFirstSpace,dataDropdown,OnClickFilter}
+    /*team members for menu in formart
+            const data =[
+            {   
+                id:"Jose",
+                name:"Jose",
+            },
+            {   
+                id:"Cesar",
+                name:"Cesar",
+            }
+        ];
+    */
+    const menuTeamMembersFormat = (data) =>{
+        return data.map(member =>({
+            id:member.userId,
+            name : member.userName
+        }))
+    }
+
+    const Utils = {clearData,containerRef,state,getValueUntilFirstSpace,dataDropdown,OnClickFilter,menuMemember}
 
     return{
         apiCalls,

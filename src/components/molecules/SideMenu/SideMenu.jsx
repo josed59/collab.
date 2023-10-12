@@ -4,24 +4,15 @@ import { MenuItem } from "@molecules/MenuItem/MenuItem";
 import { Iconic } from "@atoms/Iconic/iconic";
 import useScreenSize from "@hooks/useScreenSize";
 import {useLogin} from "@hooks/useLogin";
-
+import  useMember  from "@hooks/useMember";
 import './sideMenu.scss';
 
-const data =[
-    {   
-        id:"Jose",
-        name:"Jose",
-    },
-    {   
-        id:"Cesar",
-        name:"Cesar",
-    }
-];
 
 
 
 function SideMenu({menuVisible, handleClickMenuButton}){
     const { logout } = useLogin();
+    const {apiCalls,Utils} = useMember()
     const location = useLocation();
     const {screenWidth} = useScreenSize();
     let  menuStyle = {};
@@ -44,6 +35,10 @@ function SideMenu({menuVisible, handleClickMenuButton}){
 
         }
         
+        useEffect(()=>{
+            apiCalls.firtsTeamMembers();
+        },[]);
+
         useEffect(() => {
           // Ejecutar acciones o lógica adicional al cambiar la ruta
           if(menuVisible && (screenWidth <= 768)){
@@ -52,7 +47,8 @@ function SideMenu({menuVisible, handleClickMenuButton}){
           }
         }, [location]);
       
-    
+        //declare data for submenu teamMembers
+        const data = Utils.menuMemember;
 
     return(
         <aside className="menu-aside" style={menuStyle}>
@@ -74,12 +70,12 @@ function SideMenu({menuVisible, handleClickMenuButton}){
                         to="/backlog"
                     />
                 </li>
-                <li >
+                {/* <li >
                     <MenuItem 
                         text="Project" 
                         to="/"
                     />
-                </li>
+                </li> */}
                 <li>
                     <MenuItem 
                         text="Log Out" 

@@ -97,6 +97,29 @@ export default function useEditBacklog() {
           onFinally();
       } 
     }
+
+    //close task
+    const closeTask = async (params) =>{
+      try{
+        setLoading();
+        const response  = await updateTask(params,token);
+        const  isValitated  = handleResponse(response); 
+        //console.log('isValitated',isValitated)
+        if(!isValitated){
+         return
+        }
+        navigate('/backlog');
+       
+
+      }catch(error){
+        // Manejar el error 
+        setMessage({message:error,style:'red'});
+        //console.log('error',error);
+      }   
+      finally {
+          onFinally();
+      } 
+    }
     
     //Handlers
       
@@ -249,6 +272,16 @@ export default function useEditBacklog() {
       updateTaskId(editTask,formData,true);
       
     }
+
+    //confirmation delete
+    const onDelteConfirmation= (taskid,userid)=> {
+      const params = {
+         taskId: taskid,
+        comment: `Delte by ${userid}`,
+        "isDeleted": true
+      }
+      closeTask(params)
+    }
     //Utils
 
     function parseDate(dateString) {
@@ -283,6 +316,7 @@ export default function useEditBacklog() {
         clearData,
         handlerIcon,
         handlerUsertest,
-        handlerClose
+        handlerClose,
+        onDelteConfirmation
     }
 };

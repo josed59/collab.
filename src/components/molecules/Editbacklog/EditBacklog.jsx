@@ -1,4 +1,4 @@
-import React, { useRef,useEffect } from "react";
+import React, { useRef,useEffect,useState } from "react";
 import { useParams } from "react-router-dom";
 import { HeadingAtom } from "@atoms/HeadingAtom/HeadingAtom";
 import { Iconic } from "@atoms/Iconic/iconic";
@@ -8,6 +8,7 @@ import { CheckboxAtom } from "@atoms/CheckboxAtom/CheckboxAtom";
 import { Button } from  "@atoms/Botton/Botton";
 import {DatepickerMolecule} from "@molecules/DatepickerMolecule/DatepickerMolecule";
 import { Message } from "@atoms/Message/Message";
+import MessageModal from "@molecules/MessageModal";
 import TooltipsAtoms from "@atoms/TooltipsAtoms/";
 import './editBacklog.scss';
 import { useNavigate } from "react-router-dom";
@@ -25,9 +26,23 @@ function Editbacklog(){
         parseDate,
         handlerOnSubmit,
         refEditTask,
-        handlerIcon
+        handlerIcon,
+        onDelteConfirmation
     } = useEditBacklog();
     const {slug} = useParams();
+    //Variable to show modal
+    const [showModal, setShowModal] = useState(false);
+    
+    // Función para abrir el modal
+    const openModal = () => {
+        setShowModal(true);
+    };
+    
+    // Función para cerrar el modal
+    const closeModal = () => {
+        setShowModal(false);
+    }
+
 
 
     useEffect(() => {
@@ -59,6 +74,9 @@ function Editbacklog(){
                 )}
                 <TooltipsAtoms text='Close'>
                     <Iconic icon="check" action={() =>handlerIcon('check',slug)}/>
+                </TooltipsAtoms>
+                <TooltipsAtoms text="Delete">
+                            <Iconic icon="delete" action={openModal}/>
                 </TooltipsAtoms>
             </div>
         </div>
@@ -122,6 +140,16 @@ function Editbacklog(){
             </form>
         </div>
         <div className="Editbacklog-bottom"></div>
+        //Modal 
+        {showModal && 
+            <MessageModal 
+                onClose = {closeModal}  
+                isOpen ={showModal}
+                messageText={`Do you really want to delete task "${state.data?.tasks?.title}"?`}
+                messageTitle="Confirm"
+                onConfirm={()=>onDelteConfirmation(slug,state.user?.email)}
+                />
+        }
 
 
     </section>

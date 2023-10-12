@@ -9,7 +9,7 @@ import { FilterMolecule } from "@molecules/FilterMolecule/FilterMolecule";
 import  TooltipsAtoms  from "@atoms/TooltipsAtoms/";
 import MessageModal from "@molecules/MessageModal";
 import  useMember  from "@hooks/useMember";
-import { useParams } from "react-router-dom";
+import { useParams,useLocation } from "react-router-dom";
 
 let memberData = {};
 
@@ -17,6 +17,7 @@ function Member(){
     const {slug} = useParams();
     const {apiCalls,Utils,member,handlers} = useMember();
     const [showModal, setShowModal] = useState(false);
+    const location = useLocation();
     
     const data = Utils.state.data?.tasks;
     useEffect(()=>{
@@ -25,6 +26,14 @@ function Member(){
         apiCalls.getTasks(1,null,'All',slug);
         Utils.clearData();
     },[]
+    );
+
+    useEffect(()=>{
+        apiCalls.getAllStates();
+        apiCalls.getUser(slug);
+        apiCalls.getTasks(1,null,'All',slug);
+        Utils.clearData();
+    },[location]
     );
 
 // Función para abrir el modal
